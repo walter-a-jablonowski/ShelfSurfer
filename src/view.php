@@ -56,6 +56,7 @@
               <?php foreach($otherVendors as $vendor): ?>
                 <li>
                   <a class="dropdown-item" href="#" data-vendor="<?= $vendor ?>">
+                    <i class="bi bi-shop me-2"></i>
                     <?= $vendor ?>
                   </a>
                 </li>
