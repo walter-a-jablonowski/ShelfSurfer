@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
           <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
             <div class="card-header d-flex justify-content-between align-items-center">
-              ${section}
+              <b>${section}</b>
               <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
                 <i class="bi bi-plus-lg"></i>
               </button>
