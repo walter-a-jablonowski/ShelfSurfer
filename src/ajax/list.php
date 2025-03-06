@@ -5,10 +5,8 @@ require_once 'vendor/autoload.php';
 use Symfony\Component\Yaml\Yaml;
 
 try {
-
-  $currentListFile = 'current_list.yml';
-  $currentList = file_exists($currentListFile)
-    ? Yaml::parseFile($currentListFile)
+  $currentList = file_exists('current_list.yml')
+    ? Yaml::parseFile('current_list.yml')
     : ['items' => []];
 
   $vendor = $_GET['vendor'];
