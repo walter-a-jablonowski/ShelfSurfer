@@ -26,13 +26,13 @@ body {
   left: 0;
   right: 0;
   height: var(--tab-height);
-  background: white;
-  border-top: 1px solid #dee2e6;
+  background: #333333;
+  border-top: 1px solid #444444;
   z-index: 1000;
 }
 .tab-item {
   text-decoration: none;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.8rem;
   display: flex;
   flex-direction: column;
@@ -41,11 +41,29 @@ body {
   height: 100%;
 }
 .tab-item.active {
-  color: #0d6efd;
+  color: white;
+}
+.tab-item:hover {
+  color: white;
+  text-decoration: none;
 }
 .tab-item i {
   font-size: 1.4rem;
   margin-bottom: 2px;
+}
+.dropup-vendors {
+  max-height: 300px;
+  overflow-y: auto;
+  background: #333333;
+  border: 1px solid #444444;
+  border-radius: 4px;
+}
+.dropup-vendors .dropdown-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+.dropup-vendors .dropdown-item:hover {
+  color: white;
+  background: #444444;
 }
 .section-card {
   margin-bottom: 1rem;
@@ -65,7 +83,30 @@ body {
 .form-check-input {
   margin-right: 0.5rem;
 }
-.dropup-vendors {
-  max-height: 300px;
-  overflow-y: auto;
+.modal-content {
+  background: #333333;
+  color: white;
+  border: 1px solid #444444;
+}
+.modal-header {
+  border-bottom: 1px solid #444444;
+}
+.modal-footer {
+  border-top: 1px solid #444444;
+}
+.form-control {
+  background: #444444;
+  border: 1px solid #555555;
+  color: white;
+}
+.form-control:focus {
+  background: #444444;
+  border-color: #666666;
+  color: white;
+}
+.form-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
 }
