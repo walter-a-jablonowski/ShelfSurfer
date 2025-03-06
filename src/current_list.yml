@@ -1,6 +1,5 @@
 items:
-    - { id: 1, text: kaffeefilter, vendor: Norma, section: Eingang, checked: true }
-    - { id: 2, text: gemüse, vendor: Rewe, section: Gemüse, checked: false }
-    - { id: 67c9da3b8cd69, text: ddd, vendor: Norma, section: Eingang, checked: false }
-    - { id: 67c9dbd21d18c, text: gg, vendor: Norma, section: Eingang, checked: false }
-    - { id: 67c9dbe224cdb, text: lala, vendor: Rewe, section: Gemüse, checked: true }
+    - { id: 1, text: kaffeefilter, vendor: Norma, section: Eingang, checked: false }
+    - { id: 2, text: körnerfresser, vendor: Norma, section: Gang_1, checked: false }
+    - { id: 3, text: gemüse, vendor: Rewe, section: Gemüse, checked: false }
+    - { id: 67c9dfd2b7646, text: gg, vendor: Norma, section: Eingang, checked: true }
