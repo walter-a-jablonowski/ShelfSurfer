@@ -27,13 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
   ]
   
   let currentVendor = null
-  let currentList = []
+  let currentList   = []
 
   // Load initial vendor
   const firstVendorTab = document.querySelector('[data-vendor]')
-  if(firstVendorTab) {
+
+  if( firstVendorTab )
     loadVendor(firstVendorTab.dataset.vendor)
-  }
 
   // Handle vendor selection
   document.querySelectorAll('[data-vendor]').forEach(el => {
@@ -44,15 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   // Handle import button click
-  if(importButton) {
+  if( importButton ) {
     console.log('Adding import button click handler')
     importButton.addEventListener('click', handleImport)
   }
 
-  async function handleImport() {
+  async function handleImport()
+  {
     console.log('Import button clicked')
     const text = importText.value.trim()
-    if(!text) {
+    
+    if( ! text) {
       alert('Please enter some text to import')
       return
     }
@@ -74,9 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await response.json()
       console.log('Import response:', result)
       
-      if(!response.ok) {
+      if( ! response.ok)
         throw new Error(result.error || 'Import failed')
-      }
       
       if(result.success) {
         currentList = result.items
@@ -89,7 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
           loadVendor(firstVendorWithItems)
         }
       }
-    } catch(err) {
+    }
+    catch(err) {
       console.error('Import failed:', err)
       alert('Import failed: ' + err.message)
     }
@@ -97,9 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle item checking
   content.addEventListener('change', async e => {
-    if(!e.target.matches('.form-check-input')) return
+
+    if( ! e.target.matches('.form-check-input'))  return
     
-    const itemId = e.target.dataset.id
+    const itemId  = e.target.dataset.id
     const checked = e.target.checked
     
     e.target.closest('.list-group-item').classList.toggle('checked', checked)
@@ -118,8 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       })
 
-      if(!response.ok) throw new Error('Toggle failed')
-    } catch(err) {
+      if( ! response.ok) throw new Error('Toggle failed')
+    }
+    catch(err) {
       console.error('Toggle failed:', err)
       // Revert UI state on error
       e.target.checked = !checked
@@ -127,8 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  async function loadVendor(vendor) {
+  async function loadVendor(vendor)
+  {
     try {
+
       const response = await fetch(`ajax.php?action=list&vendor=${encodeURIComponent(vendor)}`)
       if( ! response.ok) throw new Error('Failed to load vendor')
       
@@ -145,14 +151,16 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       
       renderVendor(vendor)
-    } catch(err) {
+    }
+    catch(err) {
       console.error('Failed to load vendor:', err)
       alert('Failed to load vendor. Please try again.')
     }
   }
 
-  function renderVendor(vendor) {
-    const items = currentList.filter(item => item.vendor === vendor)
+  function renderVendor(vendor)
+  {
+    const items    = currentList.filter(item => item.vendor === vendor)
     const sections = {}
     
     // Group items by section
