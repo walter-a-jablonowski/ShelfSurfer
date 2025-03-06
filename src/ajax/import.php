@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -38,8 +38,8 @@ function findSection($item, $groups)
 
 try {
 
-  $groups = Yaml::parseFile(__DIR__ . '/../../groups.yml');
-  $currentListFile = __DIR__ . '/../../current_list.yml';
+  $groups = Yaml::parseFile('groups.yml');
+  $currentListFile = 'current_list.yml';
   $currentList = file_exists($currentListFile)
     ? Yaml::parseFile($currentListFile)
     : ['items' => []];

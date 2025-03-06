@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
 try {
-  $currentListFile = __DIR__ . '/../../current_list.yml';
+  $currentListFile = 'current_list.yml';
   $currentList = file_exists($currentListFile)
     ? Yaml::parseFile($currentListFile)
     : ['items' => []];

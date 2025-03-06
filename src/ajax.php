@@ -7,7 +7,7 @@ try {
   $input  = json_decode( file_get_contents('php://input'), true);
   $action = $_SERVER['REQUEST_METHOD'] === 'POST' ? $input['action'] : $_GET['action'];
   
-  $handlerFile = __DIR__ . "/ajax/{$action}.php";
+  $handlerFile = "ajax/{$action}.php";
   
   if( ! file_exists($handlerFile) ) {
     http_response_code(400);
