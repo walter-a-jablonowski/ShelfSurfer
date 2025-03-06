@@ -75,7 +75,7 @@
   </div>
 
   <div class="modal" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="importModalLabel">Import Shopping List</h5>
