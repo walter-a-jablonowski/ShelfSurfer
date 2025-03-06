@@ -23,10 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add item modal
   const addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'))
 
-  // Background colors for sections
+  // Background colors for sections (light, translucent colors)
   const sectionColors = [
-    '#f8f9fa', '#e9ecef', '#dee2e6', '#ced4da',
-    '#adb5bd', '#6c757d', '#495057', '#343a40'
+    'rgba(233, 84, 32, 0.1)',   // Ubuntu orange
+    'rgba(41, 128, 185, 0.1)',  // Soft blue
+    'rgba(39, 174, 96, 0.1)',   // Soft green
+    'rgba(142, 68, 173, 0.1)',  // Soft purple
+    'rgba(211, 84, 0, 0.1)',    // Soft orange
+    'rgba(22, 160, 133, 0.1)',  // Soft teal
+    'rgba(192, 57, 43, 0.1)',   // Soft red
+    'rgba(44, 62, 80, 0.1)'     // Soft navy
   ]
   
   let currentVendor = null
@@ -251,25 +257,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render sections
     content.innerHTML = Object.entries(sections)
-      .map( ([section, items]) => `
-        <div class="card section-card mb-3">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            ${section}
-            <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
-              <i class="bi bi-plus-lg"></i>
-            </button>
+      .map( ([section, items], index) => {
+        const color = sectionColors[index % sectionColors.length]
+        const borderColor = color.replace('0.1)', '0.3)')
+        return `
+          <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              ${section}
+              <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
+                <i class="bi bi-plus-lg"></i>
+              </button>
+            </div>
+            <ul class="list-group list-group-flush">
+              ${items.map( item => `
+                <li class="list-group-item d-flex justify-content-between align-items-center ${item.checked ? 'checked' : ''}">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
+                    <label class="form-check-label">${item.text}</label>
+                  </div>
+                </li>
+              `).join('')}
+            </ul>
           </div>
-          <ul class="list-group list-group-flush">
-            ${items.map( item => `
-              <li class="list-group-item d-flex justify-content-between align-items-center ${item.checked ? 'checked' : ''}">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
-                  <label class="form-check-label">${item.text}</label>
-                </div>
-              </li>
-            `).join('')}
-          </ul>
-        </div>
-      `).join('')
+        `
+      }).join('')
   }
 })
