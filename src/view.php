@@ -101,7 +101,7 @@ if( ! isset($groups['vendors']) )
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="importText" class="form-label">Paste alexa shopping list here:</label>
+            <label for="importText" class="form-label">Paste alexa shopping list here</label>
             <textarea class="form-control" id="importText" rows="10"></textarea>
           </div>
         </div>
@@ -121,9 +121,9 @@ if( ! isset($groups['vendors']) )
           <h5 class="modal-title">Add Item</h5>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="itemVendor">
-          <input type="hidden" id="itemSection">
-          <input type="text" class="form-control" id="itemText" placeholder="Enter item name" autofocus>
+          <input id="itemVendor"  type="hidden">
+          <input id="itemSection" type="hidden">
+          <input id="itemText"    type="text" class="form-control" autofocus>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
