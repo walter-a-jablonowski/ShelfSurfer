@@ -52,10 +52,10 @@
               <i class="bi bi-three-dots"></i>
               More
             </a>
-            <ul class="dropdown-menu dropup-vendors">
+            <ul class="dropdown-menu dropup-vendors py-2">
               <?php foreach( $miscVendors as $vendor ): ?>
                 <li>
-                  <a class="dropdown-item nav-link" href="#" data-vendor="<?= $vendor ?>">
+                  <a class="dropdown-item nav-link px-3" href="#" data-vendor="<?= $vendor ?>">
                     <i class="bi bi-shop me-2"></i>
                     <?= $vendor ?>
                   </a>
