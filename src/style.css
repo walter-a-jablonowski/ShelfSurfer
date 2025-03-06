@@ -61,12 +61,14 @@ body {
   color: white;
   background: #444444;
 }
+/*
 .section-card {
-  /* margin-bottom removed */
+
 }
 .section-card .card-header {
-  /* padding and font-weight removed */
+
 }
+*/
 .section-card .list-group-item {
   border-left: 0;
   border-right: 0;

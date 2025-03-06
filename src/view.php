@@ -33,9 +33,9 @@
       <div class="row h-100">
         <?php
 
-        $vendors      = array_keys($groups['vendors']);
-        $mainVendors  = array_slice($vendors, 0, 2);
-        $otherVendors = array_slice($vendors, 2);
+        $vendors     = array_keys($groups['vendors']);
+        $mainVendors = array_slice($vendors, 0, 2);
+        $miscVendors = array_slice($vendors, 2);
         
         foreach($mainVendors as $i => $vendor): ?>
           <div class="col text-center">
@@ -53,7 +53,7 @@
               More
             </a>
             <ul class="dropdown-menu dropup-vendors">
-              <?php foreach($otherVendors as $vendor): ?>
+              <?php foreach( $miscVendors as $vendor): ?>
                 <li>
                   <a class="dropdown-item" href="#" data-vendor="<?= $vendor ?>">
                     <i class="bi bi-shop me-2"></i>
