@@ -1,21 +1,3 @@
-<?php
-
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Symfony\Component\Yaml\Yaml;
-
-// Load groups configuration
-$groups = [];
-$groupsFile = __DIR__ . '/groups.yml';
-
-if( file_exists($groupsFile) )
-  $groups = Yaml::parseFile($groupsFile);
-
-// Ensure vendors exist
-if( ! isset($groups['vendors']) )
-  $groups['vendors'] = [];
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,4 +1,8 @@
 
+- groups.yml was renamed
+
+ --
+
 Make a groceries app that can be used on smartphone using BS 5.3
 
 Assume that we will import the groceries list from an Alexa which looks like:

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -14,18 +14,15 @@ if( ! isset($input['vendor']) )
 }
 
 $vendor = $input['vendor'];
-$yamlFile = __DIR__ . '/../current_list.yml';
-
-// Load list
 $currentList = [];
 
-if( file_exists($yamlFile) )
+if( file_exists('current_list.yml'))
 {
-  $data = Yaml::parseFile($yamlFile);
+  $data = Yaml::parseFile('current_list.yml');
   $currentList = isset($data['items']) ? $data['items'] : [];
 }
 
 // Filter by vendor
 $vendorItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === $vendor );
 
-echo json_encode( array_values($vendorItems) );
+echo json_encode( array_values($vendorItems));

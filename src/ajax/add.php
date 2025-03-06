@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -25,14 +25,13 @@ if( ! $text )
 }
 
 // Load current list
-$yamlFile = __DIR__ . '/../current_list.yml';
 $data = [
   'items' => []
 ];
 
-if( file_exists($yamlFile) )
+if( file_exists('current_list.yml') )
 {
-  $data = Yaml::parseFile($yamlFile);
+  $data = Yaml::parseFile('current_list.yml');
   if( ! isset($data['items']) )
     $data['items'] = [];
 }
@@ -49,7 +48,7 @@ $newItem = [
 $data['items'][] = $newItem;
 
 // Save list
-file_put_contents( $yamlFile, Yaml::dump($data, 4, 2) );
+file_put_contents('current_list.yml', Yaml::dump($data, 4, 2) );
 
 // Return success with the new item for immediate display
 echo json_encode([
