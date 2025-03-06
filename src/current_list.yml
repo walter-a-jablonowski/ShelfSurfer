@@ -1,5 +1,10 @@
 items:
     - { id: 1, text: kaffeefilter, vendor: Norma, section: Eingang, checked: false }
-    - { id: 2, text: körnerfresser, vendor: Norma, section: Gang_1, checked: false }
-    - { id: 3, text: gemüse, vendor: Rewe, section: Gemüse, checked: false }
-    - { id: 67c9dfd2b7646, text: gg, vendor: Norma, section: Eingang, checked: true }
+    - { id: 2, text: 'schwarzer tee norma', vendor: Norma, section: Eingang, checked: false }
+    - { id: 3, text: körnerfresser, vendor: Norma, section: Gang_1, checked: false }
+    - { id: 4, text: gefrierbeutel, vendor: Norma, section: Haush, checked: false }
+    - { id: 5, text: fisch, vendor: Norma, section: Gang_gigi, checked: false }
+    - { id: 6, text: flaschen, vendor: Norma, section: Gang_2, checked: false }
+    - { id: 7, text: joghurt, vendor: Norma, section: Kühl, checked: false }
+    - { id: 8, text: 'gemüse norma', vendor: Norma, section: Kasse, checked: false }
+    - { id: 9, text: gemüse, vendor: Rewe, section: Gemüse, checked: false }
