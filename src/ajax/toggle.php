@@ -5,12 +5,13 @@ require_once 'vendor/autoload.php';
 use Symfony\Component\Yaml\Yaml;
 
 try {
+
   $currentList = file_exists('current_list.yml')
     ? Yaml::parseFile('current_list.yml')
     : ['items' => []];
 
-  $input = json_decode(file_get_contents('php://input'), true);
-  $id = $input['id'];
+  $input   = json_decode(file_get_contents('php://input'), true);
+  $id      = $input['id'];
   $checked = $input['checked'];
   
   foreach( $currentList['items'] as &$item ) {

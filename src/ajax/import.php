@@ -4,49 +4,18 @@ require_once 'vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
-function findSection($item, $groups) 
-{
-  if( ! is_array($groups) || ! isset($groups['vendors']) || ! is_array($groups['vendors']))
-    return null;
-
-  foreach( $groups['vendors'] as $vendor => $sections )
-  {
-    if( ! is_array($sections) )
-      continue;
-
-    foreach( $sections as $section => $possibleItems )
-    {
-      if( ! is_array($possibleItems))
-        continue;
-
-      foreach( $possibleItems as $possibleItem )
-      {
-        if( ! is_string($possibleItem) )
-          continue;
-
-        if( stripos($item, $possibleItem) !== false )
-          return [
-            'vendor'  => $vendor,
-            'section' => $section
-          ];
-      }
-    }
-  }
-
-  return null;
-}
-
 try {
+
   $groups = Yaml::parseFile('groups.yml');
   $currentList = file_exists('current_list.yml')
     ? Yaml::parseFile('current_list.yml')
     : ['items' => []];
 
   $input = json_decode(file_get_contents('php://input'), true);
-  $text = $input['text'];
+  $text  = $input['text'];
   $lines = explode("\n", $text);
   $items = [];
-  $id = 1;
+  $id    = 1;
   
   foreach( $lines as $line)
   {
@@ -88,4 +57,37 @@ catch( Exception $e ) {
   echo json_encode([
     'error' => $e->getMessage()
   ]);
+}
+
+
+function findSection($item, $groups) 
+{
+  if( ! is_array($groups) || ! isset($groups['vendors']) || ! is_array($groups['vendors']))
+    return null;
+
+  foreach( $groups['vendors'] as $vendor => $sections )
+  {
+    if( ! is_array($sections) )
+      continue;
+
+    foreach( $sections as $section => $possibleItems )
+    {
+      if( ! is_array($possibleItems))
+        continue;
+
+      foreach( $possibleItems as $possibleItem )
+      {
+        if( ! is_string($possibleItem) )
+          continue;
+
+        if( stripos($item, $possibleItem) !== false )
+          return [
+            'vendor'  => $vendor,
+            'section' => $section
+          ];
+      }
+    }
+  }
+
+  return null;
 }

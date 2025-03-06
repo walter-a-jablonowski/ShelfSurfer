@@ -5,6 +5,7 @@ require_once 'vendor/autoload.php';
 use Symfony\Component\Yaml\Yaml;
 
 try {
+
   $currentList = file_exists('current_list.yml')
     ? Yaml::parseFile('current_list.yml')
     : ['items' => []];
