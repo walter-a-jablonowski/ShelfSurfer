@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load initial vendor
   const firstVendorTab = document.querySelector('[data-vendor]')
+  console.log('First vendor tab:', firstVendorTab?.dataset?.vendor || 'none found')
 
   if( firstVendorTab )
     loadVendor(firstVendorTab.dataset.vendor)
@@ -134,25 +135,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  // Add item button click handler
+  // Add item button click handler using event delegation
   document.addEventListener('click', e => {
-    if( ! e.target.closest('.add-item-btn')) return
-    
     const btn = e.target.closest('.add-item-btn')
-    document.getElementById('itemVendor').value = btn.dataset.vendor
-    document.getElementById('itemSection').value = btn.dataset.section
-    document.getElementById('itemText').value = ''
+    if( ! btn ) return
+    
+    const vendor  = btn.dataset.vendor
+    const section = btn.dataset.section
+    
+    document.getElementById('itemVendor').value  = vendor
+    document.getElementById('itemSection').value = section
+    document.getElementById('itemText').value    = ''
     addItemModal.show()
   })
 
-  // Add item form submit
-  document.getElementById('addItemButton').addEventListener('click', async () => {
+  // Add item handlers
+  async function handleAddItem()
+  {
     try {
       const vendor  = document.getElementById('itemVendor').value
       const section = document.getElementById('itemSection').value
       const text    = document.getElementById('itemText').value.trim()
       
-      if( ! text) return
+      if( ! text ) return
       
       const response = await fetch('ajax.php', {
         method: 'POST',
@@ -167,79 +172,104 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       })
       
-      if( ! response.ok) throw new Error('Failed to add item')
+      const result = await response.json()
       
-      addItemModal.hide()
-      await loadVendor(vendor)
+      if( ! response.ok ) 
+        throw new Error(result.error || 'Failed to add item')
+      
+      if( result.success ) {
+        currentList.push(result.item)
+        addItemModal.hide()
+        renderVendor(vendor)
+      }
     }
-    catch(err) {
+    catch( err ) {
       console.error('Failed to add item:', err)
       alert('Failed to add item. Please try again.')
     }
+  }
+
+  // Handle Enter key in input
+  document.getElementById('itemText').addEventListener('keyup', e => {
+    if( e.key === 'Enter' ) {
+      e.preventDefault()
+      handleAddItem()
+    }
   })
 
-  async function loadVendor(vendor)
-  {
-    try {
+  // Add item form submit
+  document.getElementById('addItemButton').addEventListener('click', handleAddItem)
 
-      const response = await fetch(`ajax.php?action=list&vendor=${encodeURIComponent(vendor)}`)
-      if( ! response.ok) throw new Error('Failed to load vendor')
+  async function loadVendor( vendor )
+  {
+    try 
+    {
+      console.log('Loading vendor:', vendor)
+      const response = await fetch('ajax.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'get',
+          vendor
+        })
+      })
       
-      const result = await response.json()
-      currentList = result.items
-      currentVendor = vendor
+      if( ! response.ok ) throw new Error('Failed to load vendor')
+      
+      currentList = await response.json()
+      console.log('Loaded items:', currentList)
       
       // Update active state
-      document.querySelectorAll('.tab-item').forEach(el => {
-        el.classList.toggle('active', el.dataset.vendor === vendor)
-      })
-      document.querySelectorAll('.dropdown-item').forEach(el => {
+      document.querySelectorAll('.nav-link').forEach( el => {
         el.classList.toggle('active', el.dataset.vendor === vendor)
       })
       
       renderVendor(vendor)
     }
-    catch(err) {
+    catch( err ) 
+    {
       console.error('Failed to load vendor:', err)
-      alert('Failed to load vendor. Please try again.')
+      content.innerHTML = `<div class="alert alert-danger">Failed to load items</div>`
     }
   }
 
-  function renderVendor(vendor)
+  function renderVendor( vendor )
   {
-    const items    = currentList.filter(item => item.vendor === vendor)
+    console.log('Rendering vendor:', vendor)
+    const items = currentList.filter( item => item.vendor === vendor )
+    console.log('Filtered items:', items)
+    
     const sections = {}
     
     // Group items by section
-    items.forEach(item => {
-      if(!sections[item.section]) {
-        sections[item.section] = []
-      }
+    items.forEach( item => {
+      if( ! sections[item.section] ) sections[item.section] = []
       sections[item.section].push(item)
     })
 
     // Render sections
     content.innerHTML = Object.entries(sections)
-      .map(([section, items], i) => `
-        <div class="card section-card mb-3" style="background-color: ${sectionColors[i % sectionColors.length]}">
-          <div class="card-header p-3 fw-bold d-flex justify-content-between align-items-center">
+      .map( ([section, items]) => `
+        <div class="card section-card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
             ${section}
-            <button class="btn btn-sm p-0 add-item-btn" data-vendor="${currentVendor}" data-section="${section}">
-              <i class="bi bi-plus-lg me-1"></i>
+            <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
+              <i class="bi bi-plus-lg"></i>
             </button>
           </div>
           <ul class="list-group list-group-flush">
-            ${items.map(item => `
-              <li class="list-group-item p-3${item.checked ? ' checked' : ''}" style="background-color: ${sectionColors[i % sectionColors.length]}">
+            ${items.map( item => `
+              <li class="list-group-item d-flex justify-content-between align-items-center ${item.checked ? 'checked' : ''}">
                 <div class="form-check">
-                  <input class="form-check-input me-2" type="checkbox" data-id="${item.id}"${item.checked ? ' checked' : ''}>
+                  <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
                   <label class="form-check-label">${item.text}</label>
                 </div>
               </li>
             `).join('')}
           </ul>
         </div>
-      `)
-      .join('')
+      `).join('')
   }
 })

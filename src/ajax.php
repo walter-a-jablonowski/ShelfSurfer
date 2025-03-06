@@ -2,22 +2,30 @@
 
 header('Content-Type: application/json');
 
-try {
+try 
+{
+  $input = json_decode( file_get_contents('php://input'), true );
   
-  $input  = json_decode( file_get_contents('php://input'), true);
-  $action = $_SERVER['REQUEST_METHOD'] === 'POST' ? $input['action'] : $_GET['action'];
+  if( ! isset($input['action']) )
+  {
+    http_response_code(400);
+    echo json_encode(['error' => 'Missing action']);
+    exit;
+  }
   
-  if( ! file_exists("ajax/{$action}.php") ) {
+  $handler = "ajax/{$input['action']}.php";
+  
+  if( ! file_exists($handler) )
+  {
     http_response_code(400);
     echo json_encode(['error' => 'Invalid action']);
     exit;
   }
   
-  require_once "ajax/{$action}.php";
+  require $handler;
 }
-catch( Exception $e ) {
+catch( Exception $e ) 
+{
   http_response_code(500);
-  echo json_encode([
-    'error' => $e->getMessage()
-  ]);
+  echo json_encode(['error' => $e->getMessage()]);
 }

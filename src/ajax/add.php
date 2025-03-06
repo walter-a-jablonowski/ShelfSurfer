@@ -1,11 +1,15 @@
 <?php
 
-$input = json_decode(file_get_contents('php://input'), true);
+require_once __DIR__ . '/../vendor/autoload.php';
 
-if( ! isset($input['vendor']) || ! isset($input['section']) || ! isset($input['text']))
+use Symfony\Component\Yaml\Yaml;
+
+$input = json_decode( file_get_contents('php://input'), true );
+
+if( ! isset($input['vendor']) || ! isset($input['section']) || ! isset($input['text']) )
 {
   http_response_code(400);
-  echo json_encode(['error' => 'Missing required fields']);
+  echo json_encode( ['error' => 'Missing required fields'] );
   exit;
 }
 
@@ -13,28 +17,42 @@ $vendor  = $input['vendor'];
 $section = $input['section'];
 $text    = trim($input['text']);
 
-if( empty($text))
+if( ! $text )
 {
   http_response_code(400);
-  echo json_encode(['error' => 'Text cannot be empty']);
+  echo json_encode( ['error' => 'Text cannot be empty'] );
   exit;
 }
 
 // Load current list
-$currentList = [];
-if( file_exists('../current_list.yml'))
-  $currentList = Symfony\Component\Yaml\Yaml::parseFile('../current_list.yml');
+$yamlFile = __DIR__ . '/../current_list.yml';
+$data = [
+  'items' => []
+];
+
+if( file_exists($yamlFile) )
+{
+  $data = Yaml::parseFile($yamlFile);
+  if( ! isset($data['items']) )
+    $data['items'] = [];
+}
 
 // Add new item
-$currentList[] = [
+$newItem = [
   'id'      => uniqid(),
+  'text'    => $text,
   'vendor'  => $vendor,
   'section' => $section,
-  'text'    => $text,
   'checked' => false
 ];
 
-// Save list
-file_put_contents('../current_list.yml', Symfony\Component\Yaml\Yaml::dump($currentList, 4, 2));
+$data['items'][] = $newItem;
 
-echo json_encode(['success' => true]);
+// Save list
+file_put_contents( $yamlFile, Yaml::dump($data, 4, 2) );
+
+// Return success with the new item for immediate display
+echo json_encode([
+  'success' => true,
+  'item'    => $newItem
+]);

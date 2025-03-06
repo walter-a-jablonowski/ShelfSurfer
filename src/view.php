@@ -1,3 +1,21 @@
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
+
+// Load groups configuration
+$groups = [];
+$groupsFile = __DIR__ . '/groups.yml';
+
+if( file_exists($groupsFile) )
+  $groups = Yaml::parseFile($groupsFile);
+
+// Ensure vendors exist
+if( ! isset($groups['vendors']) )
+  $groups['vendors'] = [];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,13 +51,13 @@
       <div class="row h-100">
         <?php
 
-        $vendors     = array_keys($groups['vendors']);
-        $mainVendors = array_slice($vendors, 0, 2);
-        $miscVendors = array_slice($vendors, 2);
+        $vendors = array_keys( $groups['vendors'] );
+        $mainVendors = array_slice( $vendors, 0, 2 );
+        $miscVendors = array_slice( $vendors, 2 );
         
-        foreach($mainVendors as $i => $vendor): ?>
+        foreach( $mainVendors as $i => $vendor ): ?>
           <div class="col text-center">
-            <a href="#" class="tab-item d-flex flex-column align-items-center justify-content-center pt-1" data-vendor="<?= $vendor ?>">
+            <a href="#" class="nav-link tab-item d-flex flex-column align-items-center justify-content-center pt-1" data-vendor="<?= $vendor ?>">
               <i class="bi bi-shop"></i>
               <?= $vendor ?>
             </a>
@@ -53,9 +71,9 @@
               More
             </a>
             <ul class="dropdown-menu dropup-vendors">
-              <?php foreach( $miscVendors as $vendor): ?>
+              <?php foreach( $miscVendors as $vendor ): ?>
                 <li>
-                  <a class="dropdown-item" href="#" data-vendor="<?= $vendor ?>">
+                  <a class="dropdown-item nav-link" href="#" data-vendor="<?= $vendor ?>">
                     <i class="bi bi-shop me-2"></i>
                     <?= $vendor ?>
                   </a>
@@ -75,7 +93,7 @@
     </div>
   </div>
 
-  <div class="modal" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel">
+  <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -83,9 +101,8 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="importText" class="form-label">Paste your shopping list here:</label>
-            <textarea class="form-control" id="importText" rows="10" aria-describedby="importTextHelp"></textarea>
-            <div id="importTextHelp" class="form-text">Copy and paste your shopping list here to import it.</div>
+            <label for="importText" class="form-label">Paste alexa shopping list here:</label>
+            <textarea class="form-control" id="importText" rows="10"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -96,22 +113,23 @@
     </div>
   </div>
 
-  <div class="modal" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <!-- Add Item Modal -->
+  <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addItemModalLabel">Add Item</h5>
+          <h5 class="modal-title">Add Item</h5>
         </div>
         <div class="modal-body">
-          <div class="form-group">
-            <input type="text" class="form-control" id="itemText">
-            <input type="hidden" id="itemVendor">
-            <input type="hidden" id="itemSection">
-          </div>
+          <input type="hidden" id="itemVendor">
+          <input type="hidden" id="itemSection">
+          <input type="text" class="form-control" id="itemText" placeholder="Enter item name" autofocus>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="addItemButton">Add</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="addItemButton">
+            Add
+          </button>
         </div>
       </div>
     </div>
