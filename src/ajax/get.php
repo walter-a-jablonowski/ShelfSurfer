@@ -16,9 +16,9 @@ if( ! isset($input['vendor']) )
 $vendor = $input['vendor'];
 $currentList = [];
 
-if( file_exists('current_list.yml'))
+if( file_exists('data/default_user/current_list.yml'))
 {
-  $data = Yaml::parseFile('current_list.yml');
+  $data = Yaml::parseFile('data/default_user/current_list.yml');
   $currentList = isset($data['items']) ? $data['items'] : [];
 }
 

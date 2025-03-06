@@ -1,5 +1,5 @@
 
-- groups.yml was renamed
+- groups.yml was renamed data/default_user/places.yml
 
  --
 

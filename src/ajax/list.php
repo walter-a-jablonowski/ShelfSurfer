@@ -6,8 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 
 try {
 
-  $currentList = file_exists('current_list.yml')
-    ? Yaml::parseFile('current_list.yml')
+  $currentList = file_exists('data/default_user/current_list.yml')
+    ? Yaml::parseFile('data/default_user/current_list.yml')
     : ['items' => []];
 
   $vendor = $_GET['vendor'];

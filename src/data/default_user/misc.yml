@@ -1,0 +1,29 @@
+
+FIX_ENTRIES: |
+  
+  ```
+  like Urmensch ----------------------
+                                      |
+        jagen nach Sicht              |
+        Pausen machen                 |
+        Buy no carbs                  |
+        Vorr = less stress            |
+                                      |
+  check list at checkout <------------
+  ```
+
+FIX_ENTRIES_SUB:
+
+  Dorf / Tanke:      "( i ) "
+  Dorf / Misc:       "( i ) "
+  Norma / Eingang:   "( i ) "
+  Norma / Haush:     "( i ) "
+  Norma / Gang_gigi: "( i ) "
+  Norma / Gang_2:    "( i ) Enough Salz (Mandel)"
+  Norma / Kühl:      "( i ) Zuviel Salz prüfen"
+  Norma / Kasse:     "( i ) "
+  Rewe / Gemüse:     "( i ) "
+  Rewe / Gefrier:    "( i ) Zuviel Salz prüfen"
+  Rewe / Haush:      "( i ) "
+  Rewe / Nüsse-Kons: "( i ) Riegel = Bodein auffüllen"
+  Rewe / Dee-Kühl:   "( i ) Zuviel Salz prüfen"

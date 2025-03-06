@@ -6,8 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 
 try {
 
-  $currentList = file_exists('current_list.yml')
-    ? Yaml::parseFile('current_list.yml')
+  $currentList = file_exists('data/default_user/current_list.yml')
+    ? Yaml::parseFile('data/default_user/current_list.yml')
     : ['items' => []];
 
   $input   = json_decode(file_get_contents('php://input'), true);
@@ -21,7 +21,7 @@ try {
     }
   }
   
-  file_put_contents('current_list.yml', Yaml::dump($currentList));
+  file_put_contents('data/default_user/current_list.yml', Yaml::dump($currentList));
   echo json_encode(['success' => true]);
 }
 catch( Exception $e ) {

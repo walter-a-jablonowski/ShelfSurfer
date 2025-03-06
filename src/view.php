@@ -33,7 +33,7 @@
       <div class="row h-100">
         <?php
 
-        $vendors = array_keys( $groups['vendors'] );
+        $vendors = array_keys( $places );
         $mainVendors = array_slice( $vendors, 0, 2 );
         $miscVendors = array_slice( $vendors, 2 );
         

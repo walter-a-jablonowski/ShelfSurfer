@@ -6,9 +6,9 @@ use Symfony\Component\Yaml\Yaml;
 
 try {
 
-  $groups = Yaml::parseFile('groups.yml');
-  $currentList = file_exists('current_list.yml')
-    ? Yaml::parseFile('current_list.yml')
+  $places = Yaml::parseFile('data/default_user/places.yml');
+  $currentList = file_exists('data/default_user/current_list.yml')
+    ? Yaml::parseFile('data/default_user/current_list.yml')
     : ['items' => []];
 
   $input = json_decode(file_get_contents('php://input'), true);
@@ -32,7 +32,7 @@ try {
     
     if( empty($line))  continue;
     
-    $match = findSection($line, $groups);
+    $match = findSection($line, $places);
     
     if( $match )
       $items[] = [
@@ -45,7 +45,7 @@ try {
   }
   
   $currentList['items'] = $items;
-  file_put_contents('current_list.yml', Yaml::dump($currentList));
+  file_put_contents('data/default_user/current_list.yml', Yaml::dump($currentList));
   
   echo json_encode([
     'success' => true,
@@ -60,12 +60,12 @@ catch( Exception $e ) {
 }
 
 
-function findSection($item, $groups) 
+function findSection($item, $places) 
 {
-  if( ! is_array($groups) || ! isset($groups['vendors']) || ! is_array($groups['vendors']))
+  if( ! is_array($places))
     return null;
 
-  foreach( $groups['vendors'] as $vendor => $sections )
+  foreach( $places as $vendor => $sections )
   {
     if( ! is_array($sections) )
       continue;

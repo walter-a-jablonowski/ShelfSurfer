@@ -2,7 +2,7 @@
 
 Enables me doing groceries with a long list in 2 places inclding 2 times checkout in 30 min.
 
-- Setup groups.yml (place / sub -> buying and synonyms)
+- Setup data/default_user/places.yml (place / sub -> buying and synonyms)
 - Capture things using Alexa lists (most easy)
 - Export as text, import here (Alexa rest API is deprecated)
 - Automatically sorted by sub section where you buy it
