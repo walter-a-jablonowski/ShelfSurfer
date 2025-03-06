@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Groceries App</title>
+  <title>Shelf surfer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
   <link href="style.css?v=<?= time() ?>" rel="stylesheet">
@@ -14,7 +14,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <i class="bi bi-cart3"></i>
-        Groceries
+        Shelf surfer 
       </a>
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="#" title="Settings">
