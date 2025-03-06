@@ -39,7 +39,7 @@
         
         foreach($mainVendors as $i => $vendor): ?>
           <div class="col text-center">
-            <a href="#" class="tab-item" data-vendor="<?= $vendor ?>">
+            <a href="#" class="tab-item d-flex flex-column align-items-center justify-content-center pt-1" data-vendor="<?= $vendor ?>">
               <i class="bi bi-shop"></i>
               <?= $vendor ?>
             </a>
@@ -48,7 +48,7 @@
 
         <div class="col text-center">
           <div class="dropup">
-            <a href="#" class="tab-item" data-bs-toggle="dropdown">
+            <a href="#" class="tab-item d-flex flex-column align-items-center justify-content-center pt-1" data-bs-toggle="dropdown">
               <i class="bi bi-three-dots"></i>
               More
             </a>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="col text-center">
-          <button type="button" class="tab-item btn btn-link p-0 border-0" data-bs-toggle="modal" data-bs-target="#importModal">
+          <button type="button" class="tab-item btn btn-link p-0 border-0 d-flex flex-column align-items-center justify-content-center pt-1" data-bs-toggle="modal" data-bs-target="#importModal">
             <i class="bi bi-cloud-upload"></i>
             Import
           </button>
