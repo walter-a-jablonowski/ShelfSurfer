@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+
   console.log('Initializing controller...')
   
-  const content = document.getElementById('content')
-  const importText = document.getElementById('importText')
+  const content      = document.getElementById('content')
+  const importText   = document.getElementById('importText')
   const importButton = document.getElementById('importButton')
-  const importModal = document.getElementById('importModal')
+  const importModal  = document.getElementById('importModal')
   
   console.log('Elements found:', {
     content: !!content,
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+
       console.log('Sending import request...')
       const response = await fetch('ajax.php', {
         method: 'POST',
@@ -103,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.target.closest('.list-group-item').classList.toggle('checked', checked)
 
     try {
+
       const response = await fetch('ajax.php', {
         method: 'POST',
         headers: {
@@ -127,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadVendor(vendor) {
     try {
       const response = await fetch(`ajax.php?action=list&vendor=${encodeURIComponent(vendor)}`)
-      if(!response.ok) throw new Error('Failed to load vendor')
+      if( ! response.ok) throw new Error('Failed to load vendor')
       
       const result = await response.json()
       currentList = result.items
