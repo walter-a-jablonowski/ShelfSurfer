@@ -19,7 +19,7 @@ try {
   
   foreach( $lines as $line)
   {
-    $line = trim($line);
+    $line = trim($line); 
 
     if( empty($line))  continue;
     

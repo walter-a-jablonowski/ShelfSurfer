@@ -96,6 +96,27 @@
     </div>
   </div>
 
+  <div class="modal" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addItemModalLabel">Add Item</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" class="form-control" id="itemText">
+            <input type="hidden" id="itemVendor">
+            <input type="hidden" id="itemSection">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="addItemButton">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="controller.js?v=<?= time() ?>"></script>
 </body>

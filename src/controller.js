@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     focus: true
   })
   
+  // Add item modal
+  const addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'))
+
   // Background colors for sections
   const sectionColors = [
     '#f8f9fa', '#e9ecef', '#dee2e6', '#ced4da',
@@ -131,6 +134,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
+  // Add item button click handler
+  document.addEventListener('click', e => {
+    if( ! e.target.closest('.add-item-btn')) return
+    
+    const btn = e.target.closest('.add-item-btn')
+    document.getElementById('itemVendor').value = btn.dataset.vendor
+    document.getElementById('itemSection').value = btn.dataset.section
+    document.getElementById('itemText').value = ''
+    addItemModal.show()
+  })
+
+  // Add item form submit
+  document.getElementById('addItemButton').addEventListener('click', async () => {
+    try {
+      const vendor  = document.getElementById('itemVendor').value
+      const section = document.getElementById('itemSection').value
+      const text    = document.getElementById('itemText').value.trim()
+      
+      if( ! text) return
+      
+      const response = await fetch('ajax.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'add',
+          vendor,
+          section,
+          text
+        })
+      })
+      
+      if( ! response.ok) throw new Error('Failed to add item')
+      
+      addItemModal.hide()
+      await loadVendor(vendor)
+    }
+    catch(err) {
+      console.error('Failed to add item:', err)
+      alert('Failed to add item. Please try again.')
+    }
+  })
+
   async function loadVendor(vendor)
   {
     try {
@@ -175,8 +222,11 @@ document.addEventListener('DOMContentLoaded', () => {
     content.innerHTML = Object.entries(sections)
       .map(([section, items], i) => `
         <div class="card section-card mb-3" style="background-color: ${sectionColors[i % sectionColors.length]}">
-          <div class="card-header p-3 fw-bold">
+          <div class="card-header p-3 fw-bold d-flex justify-content-between align-items-center">
             ${section}
+            <button class="btn btn-sm p-0 add-item-btn" data-vendor="${currentVendor}" data-section="${section}">
+              <i class="bi bi-plus-lg me-1"></i>
+            </button>
           </div>
           <ul class="list-group list-group-flush">
             ${items.map(item => `
