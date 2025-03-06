@@ -17,71 +17,7 @@ if(file_exists(__DIR__ . '/current_list.yml')) {
   <title>Groceries App</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    :root {
-      --nav-height: 56px;
-      --tab-height: 60px;
-    }
-    body {
-      padding-top: var(--nav-height);
-      padding-bottom: var(--tab-height);
-    }
-    .navbar {
-      height: var(--nav-height);
-    }
-    .navbar-brand {
-      font-size: 1.1rem;
-    }
-    .tab-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: var(--tab-height);
-      background: white;
-      border-top: 1px solid #dee2e6;
-      z-index: 1000;
-    }
-    .tab-item {
-      text-decoration: none;
-      color: #6c757d;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-    }
-    .tab-item.active {
-      color: #0d6efd;
-    }
-    .tab-item i {
-      font-size: 1.4rem;
-      margin-bottom: 2px;
-    }
-    .section-card {
-      margin-bottom: 1rem;
-    }
-    .section-card .card-header {
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-    }
-    .section-card .list-group-item {
-      padding: 0.5rem 1rem;
-      border-left: 0;
-      border-right: 0;
-    }
-    .list-group-item.checked {
-      opacity: 0.5;
-    }
-    .form-check-input {
-      margin-right: 0.5rem;
-    }
-    .dropup-vendors {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-  </style>
+  <link href="style.css?v=<?= time() ?>" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
