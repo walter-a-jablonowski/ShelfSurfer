@@ -62,22 +62,17 @@ body {
   background: #444444;
 }
 .section-card {
-  margin-bottom: 1rem;
+  /* margin-bottom removed */
 }
 .section-card .card-header {
-  font-weight: bold;
-  padding: 0.5rem 1rem;
+  /* padding and font-weight removed */
 }
 .section-card .list-group-item {
-  padding: 0.5rem 1rem;
   border-left: 0;
   border-right: 0;
 }
 .list-group-item.checked {
   opacity: 0.5;
-}
-.form-check-input {
-  margin-right: 0.5rem;
 }
 .modal-content {
   background: #333333;

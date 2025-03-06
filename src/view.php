@@ -28,6 +28,22 @@
     <div id="content"></div>
   </div>
 
+  <template id="section-template">
+    <div class="section-card mb-3">
+      <div class="card-header p-3 fw-bold">
+        <span class="section-name"></span>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item p-3">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input me-2">
+            <label class="form-check-label"></label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </template>
+
   <div class="tab-bar">
     <div class="container-fluid">
       <div class="row h-100">
