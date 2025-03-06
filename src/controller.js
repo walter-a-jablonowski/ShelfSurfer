@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const borderColor = color.replace('0.1)', '0.3)')
         return `
           <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom-color: ${borderColor}">
               <b>${section}</b>
               <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
                 <i class="bi bi-plus-lg"></i>
