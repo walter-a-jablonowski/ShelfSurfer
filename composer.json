@@ -1,0 +1,14 @@
+{
+  "name": "grocery/app",
+  "description": "A simple grocery list management application",
+  "type": "project",
+  "require": {
+    "php": ">=7.4",
+    "symfony/yaml": "^5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "GroceryApp\\": "src/"
+    }
+  }
+}

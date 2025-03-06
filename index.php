@@ -1,0 +1,175 @@
+<?php
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
+
+$groups = Yaml::parseFile(__DIR__ . '/groups.yml');
+$currentList = [];
+if(file_exists(__DIR__ . '/current_list.yml')) {
+  $currentList = Yaml::parseFile(__DIR__ . '/current_list.yml');
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groceries App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --nav-height: 56px;
+      --tab-height: 60px;
+    }
+    body {
+      padding-top: var(--nav-height);
+      padding-bottom: var(--tab-height);
+    }
+    .navbar {
+      height: var(--nav-height);
+    }
+    .navbar-brand {
+      font-size: 1.1rem;
+    }
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--tab-height);
+      background: white;
+      border-top: 1px solid #dee2e6;
+      z-index: 1000;
+    }
+    .tab-item {
+      text-decoration: none;
+      color: #6c757d;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .tab-item.active {
+      color: #0d6efd;
+    }
+    .tab-item i {
+      font-size: 1.4rem;
+      margin-bottom: 2px;
+    }
+    .section-card {
+      margin-bottom: 1rem;
+    }
+    .section-card .card-header {
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+    }
+    .section-card .list-group-item {
+      padding: 0.5rem 1rem;
+      border-left: 0;
+      border-right: 0;
+    }
+    .list-group-item.checked {
+      opacity: 0.5;
+    }
+    .form-check-input {
+      margin-right: 0.5rem;
+    }
+    .dropup-vendors {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-cart3"></i>
+        Groceries
+      </a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="#" title="Settings">
+          <i class="bi bi-gear"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mb-5">
+    <div id="content"></div>
+  </div>
+
+  <div class="tab-bar">
+    <div class="container-fluid">
+      <div class="row h-100">
+        <?php
+        $vendors = array_keys($groups['vendors']);
+        $mainVendors = array_slice($vendors, 0, 2);
+        $otherVendors = array_slice($vendors, 2);
+        
+        foreach($mainVendors as $i => $vendor): ?>
+          <div class="col text-center">
+            <a href="#" class="tab-item" data-vendor="<?= $vendor ?>">
+              <i class="bi bi-shop"></i>
+              <?= $vendor ?>
+            </a>
+          </div>
+        <?php endforeach; ?>
+
+        <div class="col text-center">
+          <div class="dropup">
+            <a href="#" class="tab-item" data-bs-toggle="dropdown">
+              <i class="bi bi-three-dots"></i>
+              More
+            </a>
+            <ul class="dropdown-menu dropup-vendors">
+              <?php foreach($otherVendors as $vendor): ?>
+                <li>
+                  <a class="dropdown-item" href="#" data-vendor="<?= $vendor ?>">
+                    <?= $vendor ?>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col text-center">
+          <button type="button" class="tab-item btn btn-link p-0 border-0" data-bs-toggle="modal" data-bs-target="#importModal">
+            <i class="bi bi-cloud-upload"></i>
+            Import
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importModalLabel">Import Alexa List</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="importText" class="form-label">Paste your Alexa list here:</label>
+            <textarea class="form-control" id="importText" rows="10" aria-describedby="importTextHelp"></textarea>
+            <div id="importTextHelp" class="form-text">Copy and paste your Alexa shopping list here to import it.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="importButton">Import</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="controller.js?v=<?= time() ?>"></script>
+</body>
+</html>
