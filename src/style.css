@@ -73,6 +73,9 @@ body {
   background: transparent;
   border-left: 0;
   border-right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .list-group-item.checked {
   opacity: 0.5;

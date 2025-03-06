@@ -270,10 +270,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <ul class="list-group list-group-flush">
               ${items.map( item => `
-                <li class="list-group-item d-flex justify-content-between align-items-center ${item.checked ? 'checked' : ''}">
+                <li class="list-group-item ${item.checked ? 'checked' : ''}">
+                  <label class="form-check-label">${item.text}</label>
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
-                    <label class="form-check-label">${item.text}</label>
                   </div>
                 </li>
               `).join('')}
