@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shelf surfer</title>
+  <title>Shelf Surfer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
   <link href="style.css?v=<?= time() ?>" rel="stylesheet">
@@ -14,7 +14,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <i class="bi bi-cart3"></i>
-        Shelf surfer 
+        Shelf Surfer 
       </a>
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="#" title="Settings">
@@ -78,14 +78,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="importModalLabel">Import Alexa List</h5>
+          <h5 class="modal-title" id="importModalLabel">Import Shopping List</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="importText" class="form-label">Paste your Alexa list here:</label>
+            <label for="importText" class="form-label">Paste your shopping list here:</label>
             <textarea class="form-control" id="importText" rows="10" aria-describedby="importTextHelp"></textarea>
-            <div id="importTextHelp" class="form-text">Copy and paste your Alexa shopping list here to import it.</div>
+            <div id="importTextHelp" class="form-text">Copy and paste your shopping list here to import it.</div>
           </div>
         </div>
         <div class="modal-footer">

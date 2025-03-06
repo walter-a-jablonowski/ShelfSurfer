@@ -39,6 +39,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
+  padding-top: 4px;
 }
 .tab-item.active {
   color: white;
