@@ -174,15 +174,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render sections
     content.innerHTML = Object.entries(sections)
       .map(([section, items], i) => `
-        <div class="card section-card" style="background-color: ${sectionColors[i % sectionColors.length]}">
-          <div class="card-header">
+        <div class="card section-card mb-3" style="background-color: ${sectionColors[i % sectionColors.length]}">
+          <div class="card-header p-3 fw-bold">
             ${section}
           </div>
           <ul class="list-group list-group-flush">
             ${items.map(item => `
-              <li class="list-group-item${item.checked ? ' checked' : ''}" style="background-color: ${sectionColors[i % sectionColors.length]}">
+              <li class="list-group-item p-3${item.checked ? ' checked' : ''}" style="background-color: ${sectionColors[i % sectionColors.length]}">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" data-id="${item.id}"${item.checked ? ' checked' : ''}>
+                  <input class="form-check-input me-2" type="checkbox" data-id="${item.id}"${item.checked ? ' checked' : ''}>
                   <label class="form-check-label">${item.text}</label>
                 </div>
               </li>
