@@ -8,9 +8,17 @@ body {
 }
 .navbar {
   height: var(--nav-height);
+  background-color: #e95420;
 }
 .navbar-brand {
   font-size: 1.1rem;
+  color: white !important;
+}
+.navbar .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.navbar .nav-link:hover {
+  color: white !important;
 }
 .tab-bar {
   position: fixed;

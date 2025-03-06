@@ -10,7 +10,7 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
+  <nav class="navbar navbar-expand fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <i class="bi bi-cart3"></i>
