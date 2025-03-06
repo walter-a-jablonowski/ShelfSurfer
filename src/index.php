@@ -20,6 +20,7 @@ if(file_exists(__DIR__ . '/current_list.yml')) {
   <link href="style.css?v=<?= time() ?>" rel="stylesheet">
 </head>
 <body>
+
   <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
@@ -34,7 +35,7 @@ if(file_exists(__DIR__ . '/current_list.yml')) {
     </div>
   </nav>
 
-  <div class="container mb-5">
+  <div class="container mt-3">
     <div id="content"></div>
   </div>
 
@@ -42,8 +43,9 @@ if(file_exists(__DIR__ . '/current_list.yml')) {
     <div class="container-fluid">
       <div class="row h-100">
         <?php
-        $vendors = array_keys($groups['vendors']);
-        $mainVendors = array_slice($vendors, 0, 2);
+
+        $vendors      = array_keys($groups['vendors']);
+        $mainVendors  = array_slice($vendors, 0, 2);
         $otherVendors = array_slice($vendors, 2);
         
         foreach($mainVendors as $i => $vendor): ?>
