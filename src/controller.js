@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const importModal  = document.getElementById('importModal')
   
   console.log('Elements found:', {
-    content: !!content,
-    importText: !!importText,
+    content:      !!content,
+    importText:   !!importText,
     importButton: !!importButton,
-    importModal: !!importModal
+    importModal:  !!importModal
   })
 
   // Initialize modal
