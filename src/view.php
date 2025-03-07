@@ -40,7 +40,7 @@
         <div class="card-header" id="listHeaderCard">
           <h5 class="mb-0">
             <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#listHeaderContent" aria-expanded="true" aria-controls="listHeaderContent">
-              <i class="bi bi-info-circle me-1"></i> List Info
+              <i class="bi bi-info-circle me-1"></i> Info
             </button>
           </h5>
         </div>
