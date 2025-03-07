@@ -11,6 +11,10 @@ See the ~5 items that you need to get where you stand. Much faster than running 
 
 This is the AI powered new version of an older tool. Suggestions for how to replace the Alexa API?
 
+Misc
+
+- Added a print version of the list, use in case you don't want to risk your smartphone
+
 
 LICENSE
 ----------------------------------------------------------
