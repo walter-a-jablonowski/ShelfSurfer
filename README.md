@@ -1,6 +1,6 @@
 # ShelfSurfer
 
-Enables me doing groceries with a long list in 2 places inclding 2 times checkout in 30 min.
+An older version of this enabled me doing groceries with a long list in 2 places inclding 2 times checkout in 30 min. Version 2 ...
 
 - Setup data/default_user/places.yml (place / sub -> buying and synonyms)
 - Capture things using Alexa lists (most easy)
