@@ -3,6 +3,10 @@
 
  --
 
+I have added a static button in the tab bar@view.php#L56-62 When this is pressed can you open a new tab with a DIN A4 page in landscape and multiple columns. In the columns add a printable text version of all of the tabs that have content (sections with grociery entries).
+
+ --
+
 Make a groceries app that can be used on smartphone using BS 5.3
 
 Assume that we will import the groceries list from an Alexa which looks like:

@@ -23,6 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add item modal
   const addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'))
 
+  // Handle print functionality
+  document.querySelector('.dropdown-item[href="#"][data-print]').addEventListener('click', e => {
+    e.preventDefault()
+    window.open('print.php', '_blank')
+  })
+
   // Background colors for sections (light, translucent colors)
   const sectionColors = [
     'rgba(233, 84, 32, 0.1)',   // Ubuntu orange

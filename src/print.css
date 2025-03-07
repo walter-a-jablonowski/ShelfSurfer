@@ -1,0 +1,134 @@
+/* DIN A4 landscape print layout */
+@page {
+  size: A4 landscape;
+  margin: 0.5cm;
+}
+
+body {
+  background-color: white;
+  color: black;
+  font-family: Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* Container styling */
+.container-fluid {
+  padding: 0.5cm !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Multi-column layout */
+.print-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.5rem;
+  width: 100%;
+}
+
+/* Vendor styling */
+.print-vendor {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+.print-vendor h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.3rem;
+  color: #e95420; /* Ubuntu orange */
+}
+
+/* Section styling */
+.print-section {
+  margin-bottom: 1rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-section h3 {
+  font-size: 1rem;
+  margin: 0 0 0.2rem 0;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Items list styling */
+.print-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.print-item {
+  padding: 0.1rem 0;
+  font-size: 0.9rem;
+}
+
+.print-item.checked {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Print media specific styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .container-fluid {
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  .print-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.5rem;
+    width: 100%;
+  }
+  
+  /* Force show all background colors for printing */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+.no-print {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: #e95420;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.print-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e95420;
+  padding-bottom: 0.5rem;
+}
+
+.print-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #e95420;
+}
+
+.print-date {
+  font-size: 0.8rem;
+  color: #666;
+}

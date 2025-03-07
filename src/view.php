@@ -14,7 +14,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <i class="bi bi-cart3"></i>
-        Shelf Surfer 
+        Shelf Surfer
       </a>
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="#" title="Settings">
@@ -53,6 +53,12 @@
               More
             </a>
             <ul class="dropdown-menu dropup-vendors py-2">
+              <li>
+                <a class="dropdown-item nav-link px-3" href="#" data-print>
+                  <i class="bi bi-printer me-2"></i>
+                  Print
+                </a>
+              </li>
               <?php foreach( $miscVendors as $vendor ): ?>
                 <li>
                   <a class="dropdown-item nav-link px-3" href="#" data-vendor="<?= $vendor ?>">
