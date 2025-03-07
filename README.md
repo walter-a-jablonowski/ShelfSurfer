@@ -9,11 +9,13 @@ Enables me doing groceries with a long list in 2 places inclding 2 times checkou
 
 See the ~5 items that you need to get where you stand. Much faster than running back and forth while doing groceries or scrolling through a long list multiple times.
 
-This is the AI powered new version of an older tool. Suggestions for how to replace the Alexa API?
 
-Misc
+Added a print version of the list, use in case you don't want to risk your smartphone
 
-- Added a print version of the list, use in case you don't want to risk your smartphone
+
+## Demo
+
+<img src="misc/img.png" alt="alt text" style="max-width: 250px;">
 
 
 LICENSE
