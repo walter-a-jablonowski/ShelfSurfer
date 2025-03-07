@@ -17,6 +17,13 @@
         Shelf Surfer
       </a>
       <div class="navbar-nav ms-auto">
+
+        <!-- TASK: List info (in bu version, unimplemented) -->
+<!--
+        <a class="nav-link" href="#" title="Info">
+          <i class="bi bi-info-circle"></i>
+        </a>
+-->
         <a class="nav-link" href="#" title="Settings">
           <i class="bi bi-gear"></i>
         </a>
@@ -25,7 +32,28 @@
   </nav>
 
   <div class="container mt-3">
+
+    <!-- List info (in list version) -->
+
+    <?php if( isset($headers['listHeader']) && ! empty($headers['listHeader'])): ?>
+      <div class="card mb-3">
+        <div class="card-header" id="listHeaderCard">
+          <h5 class="mb-0">
+            <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#listHeaderContent" aria-expanded="true" aria-controls="listHeaderContent">
+              <i class="bi bi-info-circle me-1"></i> List Info
+            </button>
+          </h5>
+        </div>
+        <div id="listHeaderContent" class="collapse" aria-labelledby="listHeaderCard">
+          <div class="card-body">
+            <pre class="mb-0"><?= htmlspecialchars($headers['listHeader']) ?></pre>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>
+
     <div id="content"></div>
+
   </div>
 
   <div class="tab-bar">
