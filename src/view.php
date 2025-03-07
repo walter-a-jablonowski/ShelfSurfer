@@ -152,6 +152,12 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Pass PHP variables to JavaScript
+    const currentList = <?= json_encode(isset($currentList['items']) ? $currentList['items'] : []) ?>;
+    const places = <?= json_encode($places) ?>;
+    const headers = <?= json_encode($headers) ?>;
+  </script>
   <script src="controller.js?v=<?= time() ?>"></script>
 </body>
 </html>

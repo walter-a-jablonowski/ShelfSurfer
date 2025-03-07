@@ -266,6 +266,22 @@ document.addEventListener('DOMContentLoaded', () => {
       .map( ([section, items], index) => {
         const color = sectionColors[index % sectionColors.length]
         const borderColor = color.replace('0.1)', '0.3)')
+        
+        // Check if section header exists for this vendor and section
+        let sectionHeader = ''
+        if( typeof headers !== 'undefined' && 
+            headers && 
+            headers.sectionHeaders && 
+            headers.sectionHeaders[vendor] && 
+            headers.sectionHeaders[vendor][section] ) {
+          const headerText = headers.sectionHeaders[vendor][section]
+          sectionHeader = `
+            <div class="card-text section-info mb-2 pb-2" style="border-bottom: 1px dashed ${borderColor}">
+              <small>${headerText}</small>
+            </div>
+          `
+        }
+        
         return `
           <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
             <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom-color: ${borderColor}">
@@ -274,16 +290,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i class="bi bi-plus-lg"></i>
               </button>
             </div>
-            <ul class="list-group list-group-flush">
-              ${items.map( item => `
-                <li class="list-group-item ${item.checked ? 'checked' : ''}">
-                  <label class="form-check-label">${item.text}</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
-                  </div>
-                </li>
-              `).join('')}
-            </ul>
+            <div class="card-body pt-2 pb-0">
+              ${sectionHeader}
+              <ul class="list-group list-group-flush">
+                ${items.map( item => `
+                  <li class="list-group-item ${item.checked ? 'checked' : ''}">
+                    <label class="form-check-label">${item.text}</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
+                    </div>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
           </div>
         `
       }).join('')

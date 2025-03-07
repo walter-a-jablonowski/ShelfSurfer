@@ -7,24 +7,24 @@ sectionHeaders:  # TASK: maybe mov
 
   Norma:
   
-    # Eingang:   "( i ) "
-    # Gang 1:    "( i ) "
-    # Haush:     "( i ) "
-    # Gang:      "( i ) "
-    Gang 2:      "( i ) Enough Salz (Mandel)"
-    Kühl:        "( i ) Zuviel Salz prüfen"
-    # Kasse:     "( i ) "
+    # Eingang:   "<i class=\"bi bi-info-circle\"></i> "
+    # Gang 1:    "<i class=\"bi bi-info-circle\"></i> "
+    # Haush:     "<i class=\"bi bi-info-circle\"></i> "
+    # Gang:      "<i class=\"bi bi-info-circle\"></i> "
+    Gang 2:      "<i class=\"bi bi-info-circle\"></i> Enough Salz (Mandel)"
+    Kühl:        "<i class=\"bi bi-info-circle\"></i> Zuviel Salz prüfen"
+    # Kasse:     "<i class=\"bi bi-info-circle\"></i> "
   
   Rewe:
     
-    # Gemüse:    "( i ) "
-    Gefrier:     "( i ) Zuviel Salz prüfen"
-    # Haush:     "( i ) "
-    Nüsse Kons:  "( i ) Riegel = auffüllen"
-    Kaffee Kühl: "( i ) Zuviel Salz prüfen"
-    # Getränke:  "( i ) "
+    # Gemüse:    "<i class=\"bi bi-info-circle\"></i> "
+    Gefrier:     "<i class=\"bi bi-info-circle\"></i> Zuviel Salz prüfen"
+    # Haush:     "<i class=\"bi bi-info-circle\"></i> "
+    Nüsse Kons:  "<i class=\"bi bi-info-circle\"></i> Riegel = auffüllen"
+    Kaffee Kühl: "<i class=\"bi bi-info-circle\"></i> Zuviel Salz prüfen"
+    # Getränke:  "<i class=\"bi bi-info-circle\"></i> "
   
   Dorf:
     
-    # Tanke:     "( i ) "
-    # Misc:      "( i ) "
+    # Tanke:     "<i class=\"bi bi-info-circle\"></i> "
+    # Misc:      "<i class=\"bi bi-info-circle\"></i> "
