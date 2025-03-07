@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headers.sectionHeaders[vendor][section] ) {
           const headerText = headers.sectionHeaders[vendor][section]
           sectionHeader = `
-            <div class="card-text section-info mb-2 pb-2" style="border-bottom: 1px dashed ${borderColor}">
+            <div class="card-text section-info mb-2 px-3 pb-2" style="border-bottom: 1px dashed ${borderColor}">
               <small>${headerText}</small>
             </div>
           `
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i class="bi bi-plus-lg"></i>
               </button>
             </div>
-            <div class="card-body pt-2 pb-0">
+            <div class="card-body p-0 pt-2">
               ${sectionHeader}
               <ul class="list-group list-group-flush">
                 ${items.map( item => `
