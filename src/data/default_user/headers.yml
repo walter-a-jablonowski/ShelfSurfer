@@ -7,24 +7,24 @@ sectionHeaders:  # TASK: maybe mov
 
   Norma:
   
-    Eingang:     "( i ) "
-    Gang 1:      "( i ) "
-    Haush:       "( i ) "
-    Gang:        "( i ) "
+    # Eingang:   "( i ) "
+    # Gang 1:    "( i ) "
+    # Haush:     "( i ) "
+    # Gang:      "( i ) "
     Gang 2:      "( i ) Enough Salz (Mandel)"
     Kühl:        "( i ) Zuviel Salz prüfen"
-    Kasse:       "( i ) "
+    # Kasse:     "( i ) "
   
   Rewe:
     
-    Gemüse:      "( i ) "
+    # Gemüse:    "( i ) "
     Gefrier:     "( i ) Zuviel Salz prüfen"
-    Haush:       "( i ) "
-    Nüsse Kons:  "( i ) Riegel = Bodein auffüllen"
+    # Haush:     "( i ) "
+    Nüsse Kons:  "( i ) Riegel = auffüllen"
     Kaffee Kühl: "( i ) Zuviel Salz prüfen"
-    Getränke:    "( i ) "
+    # Getränke:  "( i ) "
   
   Dorf:
     
-    Tanke:       "( i ) "
-    Misc:        "( i ) "
+    # Tanke:     "( i ) "
+    # Misc:      "( i ) "
