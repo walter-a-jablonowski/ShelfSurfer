@@ -54,14 +54,14 @@
             </a>
             <ul class="dropdown-menu dropup-vendors py-2">
               <li>
-                <a class="dropdown-item nav-link px-3" href="#" data-print>
+                <a class="dropdown-item nav-link py-2 px-3" href="#" data-print>
                   <i class="bi bi-printer me-2"></i>
                   Print
                 </a>
               </li>
               <?php foreach( $miscVendors as $vendor ): ?>
                 <li>
-                  <a class="dropdown-item nav-link px-3" href="#" data-vendor="<?= $vendor ?>">
+                  <a class="dropdown-item nav-link py-2 px-3" href="#" data-vendor="<?= $vendor ?>">
                     <i class="bi bi-shop me-2"></i>
                     <?= $vendor ?>
                   </a>
