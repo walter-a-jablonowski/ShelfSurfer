@@ -37,12 +37,13 @@
 
     <?php if( isset($headers['listHeader']) && ! empty($headers['listHeader'])): ?>
       <div class="card mb-3">
-        <div class="card-header" id="listHeaderCard">
-          <h5 class="mb-0">
-            <button class="btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#listHeaderContent" aria-expanded="true" aria-controls="listHeaderContent">
-              <i class="bi bi-info-circle me-1"></i> Info
-            </button>
-          </h5>
+        <div id="listHeaderCard" class="card-header ps-3 pe-4 d-flex justify-content-between align-items-center">
+          <span class="d-flex align-items-center">
+            <i class="bi bi-info-circle me-2"></i> Info
+          </span>
+          <button class="btn btn-sm p-0" type="button" data-bs-toggle="collapse" data-bs-target="#listHeaderContent" aria-expanded="true" aria-controls="listHeaderContent">
+            <i class="bi bi-chevron-down" style="color: #bbb !important;"></i>
+          </button>
         </div>
         <div id="listHeaderContent" class="collapse" aria-labelledby="listHeaderCard">
           <div class="card-body">
