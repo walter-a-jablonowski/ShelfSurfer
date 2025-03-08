@@ -1,6 +1,6 @@
 items:
     - { id: 1, text: kaffeefilter, vendor: Norma, section: Eingang, checked: false }
-    - { id: 2, text: 'schwarzer tee norma', vendor: Norma, section: Eingang, checked: true }
+    - { id: 2, text: 'schwarzer tee norma', vendor: Norma, section: Eingang, checked: false }
     - { id: 3, text: körnerfresser, vendor: Norma, section: 'Gang 1', checked: false }
     - { id: 4, text: gefrierbeutel, vendor: Norma, section: Haush, checked: false }
     - { id: 5, text: fisch, vendor: Norma, section: Gang, checked: false }
