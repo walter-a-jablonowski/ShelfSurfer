@@ -1,3 +1,6 @@
+
+// first imppl, was redone by AI as a whole
+
 document.addEventListener('DOMContentLoaded', () => {
 
   console.log('Initializing controller...')
