@@ -18,7 +18,7 @@ let currentVendor = null
 // currentList is defined in view.php
 
 
-class ShoppingListController
+class MainController
 {
   constructor()
   {
@@ -368,5 +368,5 @@ function updateContent()
 // Initialize the controller when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Create controller instance
-  window.controller = new ShoppingListController()
+  window.controller = new MainController()
 })
