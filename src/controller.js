@@ -130,7 +130,9 @@ class MainController
       const result = await api.importList(text)
 
       if( result.success) {
-        currentList = result.items
+        // Update the contents of currentList without reassigning the constant
+        currentList.length = 0 // Clear the array
+        result.items.forEach(item => currentList.push(item)) // Add new items
         this.importText.value = ''
         this.bsImportModal.hide()
 
