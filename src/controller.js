@@ -129,14 +129,14 @@ class MainController
 
       const result = await api.importList(text)
 
-      if( result.success) {
+      if( result.success ) {
         // Update the contents of currentList without reassigning the constant
-        currentList.length = 0 // Clear the array
-        result.items.forEach(item => currentList.push(item)) // Add new items
+        currentList.length = 0  // Clear the array
+        result.items.forEach( item => currentList.push(item))  // Add new items
         this.importText.value = ''
         this.bsImportModal.hide()
 
-        const firstVendorWithItems = [...new Set(result.items.map(item => item.vendor))][0]
+        const firstVendorWithItems = [...new Set( result.items.map(item => item.vendor))][0]
         if( firstVendorWithItems )
           this.loadVendor(firstVendorWithItems)
       }
@@ -199,7 +199,7 @@ class MainController
     }
     catch(err) {
       console.error('Failed to add item:', err)
-      alert('Failed to add item. Please try again.')
+      alert('Failed to add item. Please try again')
     }
   }
 
