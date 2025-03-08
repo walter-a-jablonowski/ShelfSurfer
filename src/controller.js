@@ -1,500 +1,410 @@
-document.addEventListener('DOMContentLoaded', () => {
 
-  console.log('Initializing controller...')
-  
-  const content      = document.getElementById('content')
-  const importText   = document.getElementById('importText')
-  const importButton = document.getElementById('importButton')
-  const importModal  = document.getElementById('importModal')
-  
-  console.log('Elements found:', {
-    content:      !!content,
-    importText:   !!importText,
-    importButton: !!importButton,
-    importModal:  !!importModal
-  })
+// Was reimplemented by AI as a whole
 
-  // Get edit places elements
-  const editPlacesContainer = document.getElementById('editPlacesContainer')
-  const placesEditor  = document.getElementById('placesTextarea')
-  const savePlacesButton    = document.getElementById('savePlacesBtn')
-  const cancelPlacesButton  = document.getElementById('cancelEditPlacesBtn')
-  const placesStatusMessage = document.getElementById('edit-status-message')
-  
-  // Get edit headers elements
-  const editHeadersContainer = document.getElementById('editHeadersContainer')
-  const headersEditor = document.getElementById('headersTextarea')
-  const saveHeadersButton = document.getElementById('saveHeadersBtn')
-  const cancelHeadersButton = document.getElementById('cancelEditHeadersBtn')
-  const headersStatusMessage = document.getElementById('edit-headers-status-message')
-  
-  console.log('Elements found:', {
-    content:      !!content,
-    importText:   !!importText,
-    importButton: !!importButton,
-    importModal:  !!importModal,
-    editPlacesContainer: !!editPlacesContainer,
-    placesEditor:  !!placesEditor,
-    savePlacesButton:    !!savePlacesButton,
-    cancelPlacesButton:  !!cancelPlacesButton,
-    editHeadersContainer: !!editHeadersContainer,
-    headersEditor: !!headersEditor,
-    saveHeadersButton: !!saveHeadersButton,
-    cancelHeadersButton: !!cancelHeadersButton
-  })
+// Constants and utility functions
+const API_ENDPOINTS = {
+  import: 'ajax.php',
+  toggle: 'ajax.php',
+  add: 'ajax.php',
+  get: 'ajax.php',
+  places_save: 'ajax.php',
+  headers_save: 'ajax.php'
+}
 
-  // Initialize modal
-  const bsImportModal = new bootstrap.Modal(importModal, {
-    keyboard: true,
-    focus: true
-  })
+const SECTION_COLORS = [
+  'rgba(233, 84, 32, 0.1)',   // Ubuntu orange
+  'rgba(41, 128, 185, 0.1)',  // Soft blue
+  'rgba(39, 174, 96, 0.1)',   // Soft green
+  'rgba(142, 68, 173, 0.1)',  // Soft purple
+  'rgba(211, 84, 0, 0.1)',    // Soft orange
+  'rgba(22, 160, 133, 0.1)',  // Soft teal
+  'rgba(192, 57, 43, 0.1)',   // Soft red
+  'rgba(44, 62, 80, 0.1)'     // Soft navy
+]
 
-  // Add item modal
-  const addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'))
+// State management
+let currentVendor = null
+// currentList is defined in view.php
 
-  // Handle print functionality
-  document.querySelector('.dropdown-item[href="#"][data-print]').addEventListener('click', e => {
-    e.preventDefault()
-    window.open('print.php', '_blank')
-  })
-
-  // Background colors for sections (light, translucent colors)
-  const sectionColors = [
-    'rgba(233, 84, 32, 0.1)',   // Ubuntu orange
-    'rgba(41, 128, 185, 0.1)',  // Soft blue
-    'rgba(39, 174, 96, 0.1)',   // Soft green
-    'rgba(142, 68, 173, 0.1)',  // Soft purple
-    'rgba(211, 84, 0, 0.1)',    // Soft orange
-    'rgba(22, 160, 133, 0.1)',  // Soft teal
-    'rgba(192, 57, 43, 0.1)',   // Soft red
-    'rgba(44, 62, 80, 0.1)'     // Soft navy
-  ]
-  
-  let currentVendor = null
-  let currentList   = []
-
-  // Load initial vendor
-  const firstVendorTab = document.querySelector('[data-vendor]')
-  console.log('First vendor tab:', firstVendorTab?.dataset?.vendor || 'none found')
-
-  if( firstVendorTab )
-    loadVendor(firstVendorTab.dataset.vendor)
-
-  // Handle vendor selection
-  document.querySelectorAll('[data-vendor]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault()
-      loadVendor(el.dataset.vendor)
+// API functions
+const api = {
+  async makeRequest(action, data) {
+    const response = await fetch(API_ENDPOINTS[action], {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...data })
     })
-  })
+    
+    const result = await response.json()
+    if (!response.ok) throw new Error(result.error || `${action} failed`)
+    return result
+  },
 
-  // Handle import button click
-  if( importButton ) {
-    console.log('Adding import button click handler')
-    importButton.addEventListener('click', async () => {
-      await handleImport()
+  async importList(text) {
+    return this.makeRequest('import', { text })
+  },
+
+  async toggleItem(id, checked) {
+    return this.makeRequest('toggle', { id, checked })
+  },
+
+  async addItem(vendor, section, text) {
+    return this.makeRequest('add', { vendor, section, text })
+  },
+
+  async getVendorItems(vendor) {
+    return this.makeRequest('get', { vendor })
+  },
+
+  async savePlaces(content) {
+    return this.makeRequest('places_save', { content })
+  },
+
+  async saveHeaders(content) {
+    return this.makeRequest('headers_save', { content })
+  }
+}
+
+// UI Helper functions
+const ui = {
+  showStatusMessage(element, message, type, autohide = true) {
+    element.textContent = message
+    element.className = `alert alert-${type} mb-3`
+    element.classList.remove('d-none')
+    
+    if (autohide && type === 'success') {
+      setTimeout(() => element.classList.add('d-none'), 3000)
+    }
+  },
+
+  toggleContainerVisibility(showContainerId) {
+    document.querySelectorAll('.page').forEach(container => {
+      container.style.setProperty('display', 
+        container.id === showContainerId ? 'flex' : 'none', 
+        'important'
+      )
     })
+  },
+
+  showListContainer() {
+    document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
+  }
+}
+
+// Core functionality
+class ShoppingListController {
+  constructor() {
+    this.initializeElements()
+    this.initializeModals()
+    this.attachEventListeners()
+    this.loadInitialVendor()
   }
 
-  async function handleImport()
-  {
-    console.log('Import button clicked')
-    const text = importText.value.trim()
-    
-    if( ! text) {
+  initializeElements() {
+    // Main elements
+    this.content = document.getElementById('content')
+    this.importText = document.getElementById('importText')
+    this.importButton = document.getElementById('importButton')
+    this.importModal = document.getElementById('importModal')
+
+    // Places editor elements
+    this.editPlacesContainer = document.getElementById('editPlacesContainer')
+    this.placesEditor = document.getElementById('placesTextarea')
+    this.savePlacesButton = document.getElementById('savePlacesBtn')
+    this.cancelPlacesButton = document.getElementById('cancelEditPlacesBtn')
+    this.placesStatusMessage = document.getElementById('edit-status-message')
+
+    // Headers editor elements
+    this.editHeadersContainer = document.getElementById('editHeadersContainer')
+    this.headersEditor = document.getElementById('headersTextarea')
+    this.saveHeadersButton = document.getElementById('saveHeadersBtn')
+    this.cancelHeadersButton = document.getElementById('cancelEditHeadersBtn')
+    this.headersStatusMessage = document.getElementById('edit-headers-status-message')
+  }
+
+  initializeModals() {
+    this.bsImportModal = new bootstrap.Modal(this.importModal, {
+      keyboard: true,
+      focus: true
+    })
+    this.addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'))
+  }
+
+  attachEventListeners() {
+    // Print functionality
+    document.querySelector('.dropdown-item[href="#"][data-print]')
+      .addEventListener('click', e => {
+        e.preventDefault()
+        window.open('print.php', '_blank')
+      })
+
+    // Vendor selection
+    document.querySelectorAll('[data-vendor]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault()
+        this.loadVendor(el.dataset.vendor)
+      })
+    })
+
+    // Import functionality
+    if (this.importButton) {
+      this.importButton.addEventListener('click', () => this.handleImport())
+    }
+
+    // Item checking
+    this.content.addEventListener('change', e => this.handleItemCheck(e))
+
+    // Add item functionality
+    document.addEventListener('click', e => this.handleAddItemClick(e))
+    document.getElementById('itemText').addEventListener('keyup', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        this.handleAddItem()
+      }
+    })
+    document.getElementById('addItemButton').addEventListener('click', () => this.handleAddItem())
+
+    // Places editing
+    document.querySelector('.dropdown-item[data-edit-places]')
+      .addEventListener('click', e => this.handleEditPlaces(e))
+    this.savePlacesButton.addEventListener('click', () => this.handleSavePlaces())
+    this.cancelPlacesButton.addEventListener('click', () => this.handleCancelPlaces())
+
+    // Headers editing
+    document.querySelector('.dropdown-item[data-edit-headers]')
+      .addEventListener('click', e => this.handleEditHeaders(e))
+    this.saveHeadersButton.addEventListener('click', () => this.handleSaveHeaders())
+    this.cancelHeadersButton.addEventListener('click', () => this.handleCancelHeaders())
+  }
+
+  loadInitialVendor() {
+    const firstVendorTab = document.querySelector('[data-vendor]')
+    if (firstVendorTab) {
+      this.loadVendor(firstVendorTab.dataset.vendor)
+    }
+  }
+
+  async handleImport() {
+    const text = this.importText.value.trim()
+    if (!text) {
       alert('Please enter some text to import')
       return
     }
 
     try {
-
-      console.log('Sending import request...')
-      const response = await fetch('ajax.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'import',
-          text
-        })
-      })
-
-      const result = await response.json()
-      console.log('Import response:', result)
-      
-      if( ! response.ok)
-        throw new Error(result.error || 'Import failed')
-      
-      if(result.success) {
+      const result = await api.importList(text)
+      if (result.success) {
         currentList = result.items
-        importText.value = ''
-        bsImportModal.hide()
-        
-        // Get first vendor that has items
+        this.importText.value = ''
+        this.bsImportModal.hide()
+
         const firstVendorWithItems = [...new Set(result.items.map(item => item.vendor))][0]
-        if(firstVendorWithItems) {
-          loadVendor(firstVendorWithItems)
+        if (firstVendorWithItems) {
+          this.loadVendor(firstVendorWithItems)
         }
       }
-    }
-    catch(err) {
+    } catch (err) {
       console.error('Import failed:', err)
       alert('Import failed: ' + err.message)
     }
   }
 
-  // Handle item checking
-  content.addEventListener('change', async e => {
+  async handleItemCheck(e) {
+    if (!e.target.matches('.form-check-input')) return
 
-    if( ! e.target.matches('.form-check-input'))  return
-    
-    const itemId  = e.target.dataset.id
+    const itemId = e.target.dataset.id
     const checked = e.target.checked
-    
-    e.target.closest('.list-group-item').classList.toggle('checked', checked)
+    const listItem = e.target.closest('.list-group-item')
+
+    listItem.classList.toggle('checked', checked)
 
     try {
-
-      const response = await fetch('ajax.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'toggle',
-          id: itemId,
-          checked
-        })
-      })
-
-      if( ! response.ok) throw new Error('Toggle failed')
-    }
-    catch(err) {
+      await api.toggleItem(itemId, checked)
+    } catch (err) {
       console.error('Toggle failed:', err)
-      // Revert UI state on error
       e.target.checked = !checked
-      e.target.closest('.list-group-item').classList.toggle('checked', !checked)
+      listItem.classList.toggle('checked', !checked)
     }
-  })
+  }
 
-  // Add item button click handler using event delegation
-  document.addEventListener('click', e => {
+  handleAddItemClick(e) {
     const btn = e.target.closest('.add-item-btn')
-    if( ! btn ) return
-    
-    const vendor  = btn.dataset.vendor
-    const section = btn.dataset.section
-    
-    document.getElementById('itemVendor').value  = vendor
-    document.getElementById('itemSection').value = section
-    document.getElementById('itemText').value    = ''
-    addItemModal.show()
-  })
+    if (!btn) return
 
-  // Add item handlers
-  async function handleAddItem()
-  {
+    const vendor = btn.dataset.vendor
+    const section = btn.dataset.section
+
+    document.getElementById('itemVendor').value = vendor
+    document.getElementById('itemSection').value = section
+    document.getElementById('itemText').value = ''
+    this.addItemModal.show()
+  }
+
+  async handleAddItem() {
+    const vendor = document.getElementById('itemVendor').value
+    const section = document.getElementById('itemSection').value
+    const text = document.getElementById('itemText').value.trim()
+
+    if (!text) return
+
     try {
-      const vendor  = document.getElementById('itemVendor').value
-      const section = document.getElementById('itemSection').value
-      const text    = document.getElementById('itemText').value.trim()
-      
-      if( ! text ) return
-      
-      const response = await fetch('ajax.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'add',
-          vendor,
-          section,
-          text
-        })
-      })
-      
-      const result = await response.json()
-      
-      if( ! response.ok ) 
-        throw new Error(result.error || 'Failed to add item')
-      
-      if( result.success ) {
+      const result = await api.addItem(vendor, section, text)
+      if (result.success) {
         currentList.push(result.item)
-        addItemModal.hide()
-        renderVendor(vendor)
+        this.addItemModal.hide()
+        this.renderVendor(vendor)
       }
-    }
-    catch( err ) {
+    } catch (err) {
       console.error('Failed to add item:', err)
       alert('Failed to add item. Please try again.')
     }
   }
 
-  // Handle Enter key in input
-  document.getElementById('itemText').addEventListener('keyup', e => {
-    if( e.key === 'Enter' ) {
-      e.preventDefault()
-      handleAddItem()
-    }
-  })
+  async loadVendor(vendor) {
+    try {
+      const vendorItems = await api.getVendorItems(vendor)
+      
+      // Update the contents of currentList without reassigning the constant
+      currentList.length = 0 // Clear the array
+      vendorItems.forEach(item => currentList.push(item)) // Add new items
 
-  // Add item form submit
-  document.getElementById('addItemButton').addEventListener('click', handleAddItem)
-
-  async function loadVendor( vendor )
-  {
-    try 
-    {
-      console.log('Loading vendor:', vendor)
-      const response = await fetch('ajax.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'get',
-          vendor
-        })
-      })
-      
-      if( ! response.ok ) throw new Error('Failed to load vendor')
-      
-      currentList = await response.json()
-      console.log('Loaded items:', currentList)
-      
-      // Update active state
-      document.querySelectorAll('.nav-link').forEach( el => {
+      document.querySelectorAll('.nav-link').forEach(el => {
         el.classList.toggle('active', el.dataset.vendor === vendor)
       })
-      
-      renderVendor(vendor)
-    }
-    catch( err ) 
-    {
+
+      this.renderVendor(vendor)
+    } catch (err) {
       console.error('Failed to load vendor:', err)
-      content.innerHTML = `<div class="alert alert-danger">Failed to load items</div>`
+      this.content.innerHTML = `<div class="alert alert-danger">Failed to load items</div>`
     }
   }
 
-  function renderVendor( vendor )
-  {
-    console.log('Rendering vendor:', vendor)
-    const items = currentList.filter( item => item.vendor === vendor )
-    console.log('Filtered items:', items)
-    
+  renderVendor(vendor) {
+    const items = currentList.filter(item => item.vendor === vendor)
     const sections = {}
-    
-    // Group items by section
-    items.forEach( item => {
-      if( ! sections[item.section] ) sections[item.section] = []
+
+    items.forEach(item => {
+      if (!sections[item.section]) sections[item.section] = []
       sections[item.section].push(item)
     })
 
-    // Render sections
-    content.innerHTML = Object.entries(sections)
-      .map( ([section, items], index) => {
-        const color = sectionColors[index % sectionColors.length]
+    this.content.innerHTML = Object.entries(sections)
+      .map(([section, items], index) => {
+        const color = SECTION_COLORS[index % SECTION_COLORS.length]
         const borderColor = color.replace('0.1)', '0.3)')
-        
-        // Check if section header exists for this vendor and section
-        let sectionHeaderText = ''
-        if( typeof headers !== 'undefined' && 
-            headers && 
-            headers.sectionHeaders && 
-            headers.sectionHeaders[vendor] && 
-            headers.sectionHeaders[vendor][section] ) {
-          sectionHeaderText = headers.sectionHeaders[vendor][section]
-        }
-        
-        return `
-          <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
-            <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom-color: ${borderColor}">
-              <div class="d-flex align-items-center">
-                <b>${section}</b>
-                ${sectionHeaderText ? `<small class="ms-2 text-muted">${sectionHeaderText}</small>` : ''}
-              </div>
-              <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
-                <i class="bi bi-plus-lg"></i>
-              </button>
-            </div>
-            <div class="card-body p-0 pt-2">
-              <ul class="list-group list-group-flush">
-                ${items.map( item => `
-                  <li class="list-group-item ${item.checked ? 'checked' : ''}">
-                    <label class="form-check-label">${item.text}</label>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
-                    </div>
-                  </li>
-                `).join('')}
-              </ul>
-            </div>
-          </div>
-        `
+        const sectionHeaderText = this.getSectionHeaderText(vendor, section)
+
+        return this.renderSection(section, items, color, borderColor, sectionHeaderText, vendor)
       }).join('')
   }
 
-  // Helper function to show places status messages
-  function showPlacesStatusMessage( message, type )
-  {
-    placesStatusMessage.textContent = message
-    placesStatusMessage.className = `alert alert-${type} mb-3`
-    
-    // Remove d-none class if present
-    placesStatusMessage.classList.remove('d-none')
-    
-    // Auto-hide success messages after 3 seconds
-    if( type === 'success' )
-    {
-      setTimeout(() => {
-        placesStatusMessage.classList.add('d-none')
-      }, 3000)
+  getSectionHeaderText(vendor, section) {
+    return (typeof headers !== 'undefined' &&
+            headers?.sectionHeaders?.[vendor]?.[section]) || ''
+  }
+
+  renderSection(section, items, color, borderColor, headerText, vendor) {
+    return `
+      <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
+        <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom-color: ${borderColor}">
+          <div class="d-flex align-items-center">
+            <b>${section}</b>
+            ${headerText ? `<small class="ms-2 text-muted">${headerText}</small>` : ''}
+          </div>
+          <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
+            <i class="bi bi-plus-lg"></i>
+          </button>
+        </div>
+        <div class="card-body p-0 pt-2">
+          <ul class="list-group list-group-flush">
+            ${items.map(item => this.renderItem(item)).join('')}
+          </ul>
+        </div>
+      </div>
+    `
+  }
+
+  renderItem(item) {
+    return `
+      <li class="list-group-item ${item.checked ? 'checked' : ''}">
+        <label class="form-check-label">${item.text}</label>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" ${item.checked ? 'checked' : ''} data-id="${item.id}">
+        </div>
+      </li>
+    `
+  }
+
+  handleEditPlaces(e) {
+    e.preventDefault()
+    ui.toggleContainerVisibility('editPlacesContainer')
+    this.placesEditor.focus()
+  }
+
+  async handleSavePlaces() {
+    try {
+      const result = await api.savePlaces(this.placesEditor.value)
+      if (result.success) {
+        ui.showStatusMessage(this.placesStatusMessage, 'Places file saved successfully!', 'success')
+        setTimeout(() => {
+          ui.toggleContainerVisibility('listContainer')
+          ui.showListContainer()
+          updateContent()
+        }, 1000)
+      } else {
+        ui.showStatusMessage(this.placesStatusMessage, result.message || 'Error saving places content', 'danger')
+      }
+    } catch (error) {
+      ui.showStatusMessage(this.placesStatusMessage, 'Error: ' + error.message, 'danger')
     }
   }
-  
-  // Helper function to show headers status messages
-  function showHeadersStatusMessage( message, type )
-  {
-    headersStatusMessage.textContent = message
-    headersStatusMessage.className = `alert alert-${type} mb-3`
-    
-    // Remove d-none class if present
-    headersStatusMessage.classList.remove('d-none')
-    
-    // Auto-hide success messages after 3 seconds
-    if( type === 'success' )
-    {
-      setTimeout(() => {
-        headersStatusMessage.classList.add('d-none')
-      }, 3000)
+
+  handleCancelPlaces() {
+    ui.toggleContainerVisibility('listContainer')
+    ui.showListContainer()
+  }
+
+  handleEditHeaders(e) {
+    e.preventDefault()
+    ui.toggleContainerVisibility('editHeadersContainer')
+    this.headersEditor.focus()
+  }
+
+  async handleSaveHeaders() {
+    try {
+      const result = await api.saveHeaders(this.headersEditor.value)
+      if (result.success) {
+        ui.showStatusMessage(this.headersStatusMessage, 'Headers file saved successfully!', 'success')
+        setTimeout(() => {
+          ui.toggleContainerVisibility('listContainer')
+          ui.showListContainer()
+          updateContent()
+        }, 1000)
+      } else {
+        ui.showStatusMessage(this.headersStatusMessage, result.message || 'Error saving headers content', 'danger')
+      }
+    } catch (error) {
+      ui.showStatusMessage(this.headersStatusMessage, 'Error: ' + error.message, 'danger')
     }
   }
-  
-  // Handle edit places functionality
-  document.querySelector('.dropdown-item[data-edit-places]').addEventListener('click', e => {
-    e.preventDefault()
-    
-    // Hide all containers except edit container
-    const mainContainers = document.querySelectorAll('.page')
-    mainContainers.forEach(container => {
-      if( container.id !== 'editPlacesContainer' )
-        container.style.setProperty('display', 'none', 'important')
-    })
-    
-    // Show edit container (display: flex is already set in HTML)
-    editPlacesContainer.style.setProperty('display', 'flex', 'important')
-    
-    // Focus the editor for immediate typing
-    placesEditor.focus()
-  })
 
-  // Save places content
-  savePlacesButton.addEventListener('click', () => {
-    const yamlContent = placesEditor.value
-    
-    fetch('ajax.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-        action: 'places_save',
-        content: yamlContent 
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
+  handleCancelHeaders() {
+    ui.toggleContainerVisibility('listContainer')
+    ui.showListContainer()
+  }
+}
 
-        if( data.success )
-        {
-          showPlacesStatusMessage('Places file saved successfully!', 'success')
-          // Instead of full page reload, just hide editors and show list
-          setTimeout(() => {
-            editPlacesContainer.style.setProperty('display', 'none', 'important')
-            document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
-            // Refresh the content to reflect changes
-            updateContent()
-          }, 1000)
-        }
-        else
-          showPlacesStatusMessage( data.message || 'Error saving places content', 'danger')
-      })
-      .catch(error => {
-        showPlacesStatusMessage('Error: ' + error.message, 'danger')
-      })
-  })
-  
-  // Cancel editing
-  cancelPlacesButton.addEventListener('click', () => {
+// Helper function to refresh content after saving places or headers
+function updateContent() {
+  // Reload the current vendor to reflect changes
+  const activeVendorTab = document.querySelector('.nav-link.active')
+  if (activeVendorTab && activeVendorTab.dataset.vendor) {
+    controller.loadVendor(activeVendorTab.dataset.vendor)
+  }
+}
 
-    // Hide edit container
-    editPlacesContainer.style.setProperty('display', 'none', 'important')
-    
-    // Show the list container using its ID
-    document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
-  })
-  
-  // Handle edit headers functionality
-  document.querySelector('.dropdown-item[data-edit-headers]').addEventListener('click', e => {
-    e.preventDefault()
-    
-    // Hide all containers except edit headers container
-    const mainContainers = document.querySelectorAll('.page')
-    mainContainers.forEach(container => {
-      if( container.id !== 'editHeadersContainer' )
-        container.style.setProperty('display', 'none', 'important')
-    })
-    
-    // Show edit container
-    editHeadersContainer.style.setProperty('display', 'flex', 'important')
-    
-    // Focus the editor for immediate typing
-    headersEditor.focus()
-  })
-  
-  // Save headers content
-  saveHeadersButton.addEventListener('click', () => {
-    const yamlContent = headersEditor.value
-    
-    fetch('ajax.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        action: 'headers_save',
-        content: yamlContent
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if( data.success )
-        {
-          showHeadersStatusMessage('Headers file saved successfully!', 'success')
-          setTimeout(() => {
-            // Instead of full page reload, just hide editors and show list
-            editHeadersContainer.style.setProperty('display', 'none', 'important')
-            document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
-            // Refresh the content to reflect new headers
-            updateContent()
-          }, 1000)
-        }
-        else
-          showHeadersStatusMessage(data.message || 'Error saving headers content', 'danger')
-      })
-      .catch(error => {
-        showHeadersStatusMessage('Error: ' + error.message, 'danger')
-      })
-  })
-  
-  // Cancel headers editing
-  cancelHeadersButton.addEventListener('click', () => {
-    // Hide edit container
-    editHeadersContainer.style.setProperty('display', 'none', 'important')
-    
-    // Show the list container using its ID
-    document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
-  })
+// Initialize the controller when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Create controller instance
+  window.controller = new ShoppingListController()
 })
