@@ -34,7 +34,7 @@ try {
   $result = file_put_contents("data/$user/headers.yml", $content);
 
   if( $result === false ) 
-    echo json_encode(['success' => false, 'message' => 'Could not write to file']);
+    echo json_encode(['success' => false, 'message' => 'Error write to file']);
   else 
     echo json_encode(['success' => true]);
 } 

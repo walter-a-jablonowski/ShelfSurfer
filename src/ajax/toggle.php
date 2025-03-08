@@ -1,32 +1,27 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
 use Symfony\Component\Yaml\Yaml;
 
-try {
+require_once 'vendor/autoload.php';
+require_once 'lib/Session.php';
 
-  $currentList = file_exists('data/default_user/current_list.yml')
-    ? Yaml::parseFile('data/default_user/current_list.yml')
-    : ['items' => []];
 
-  $input   = json_decode(file_get_contents('php://input'), true);
-  $id      = $input['id'];
-  $checked = $input['checked'];
-  
-  foreach( $currentList['items'] as &$item ) {
-    if( $item['id'] == $id ) {
-      $item['checked'] = $checked;
-      break;
-    }
+$user = Session::getUser();  // dummy Session class
+
+$currentList = file_exists("data/$user/current_list.yml")
+  ? Yaml::parseFile("data/$user/current_list.yml")
+  : ['items' => []];
+
+$input   = json_decode( file_get_contents('php://input'), true);
+$id      = $input['id'];
+$checked = $input['checked'];
+
+foreach( $currentList['items'] as &$item ) {
+  if( $item['id'] == $id ) {
+    $item['checked'] = $checked;
+    break;
   }
-  
-  file_put_contents('data/default_user/current_list.yml', Yaml::dump($currentList));
-  echo json_encode(['success' => true]);
 }
-catch( Exception $e ) {
-  http_response_code(500);
-  echo json_encode([
-    'error' => $e->getMessage()
-  ]);
-}
+
+file_put_contents("data/$user/current_list.yml", Yaml::dump($currentList));
+echo json_encode(['success' => true]);

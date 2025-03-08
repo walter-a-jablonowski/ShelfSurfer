@@ -3,8 +3,10 @@
 use Symfony\Component\Yaml\Yaml;
 
 require_once 'vendor/autoload.php';
+require_once 'lib/Session.php';
 
-$yamlFile    = 'data/default_user/current_list.yml';
+$user        = Session::getUser();  // dummy Session class
+$yamlFile    = "data/$user/current_list.yml";
 $currentList = [];
 
 if( file_exists($yamlFile) )

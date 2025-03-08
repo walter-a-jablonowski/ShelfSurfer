@@ -1,8 +1,10 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
 use Symfony\Component\Yaml\Yaml;
+
+require_once 'vendor/autoload.php';
+require_once 'lib/Session.php';
+
 
 $input = json_decode( file_get_contents('php://input'), true );
 
@@ -20,18 +22,21 @@ $text    = trim($input['text']);
 if( ! $text )
 {
   http_response_code(400);
-  echo json_encode( ['error' => 'Text cannot be empty'] );
+  echo json_encode( ['error' => "Text cann't be empty"] );
   exit;
 }
 
 // Load current list
+
+$user = Session::getUser();  // dummy Session class
+
 $data = [
   'items' => []
 ];
 
-if( file_exists('data/default_user/current_list.yml') )
+if( file_exists("data/$user/current_list.yml") )
 {
-  $data = Yaml::parseFile('data/default_user/current_list.yml');
+  $data = Yaml::parseFile("data/$user/current_list.yml");
   if( ! isset($data['items']) )
     $data['items'] = [];
 }
@@ -47,8 +52,7 @@ $newItem = [
 
 $data['items'][] = $newItem;
 
-// Save list
-file_put_contents('data/default_user/current_list.yml', Yaml::dump($data, 4, 2) );
+file_put_contents("data/$user/current_list.yml", Yaml::dump($data, 4, 2) );
 
 // Return success with the new item for immediate display
 echo json_encode([

@@ -1,8 +1,10 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
 use Symfony\Component\Yaml\Yaml;
+
+require_once 'vendor/autoload.php';
+require_once 'lib/Session.php';
+
 
 $input = json_decode( file_get_contents('php://input'), true );
 
@@ -15,14 +17,14 @@ if( ! isset($input['vendor']) )
 
 $vendor = $input['vendor'];
 $currentList = [];
+$user   = Session::getUser();  // dummy Session class
 
-if( file_exists('data/default_user/current_list.yml'))
+if( file_exists("data/$user/current_list.yml"))
 {
-  $data = Yaml::parseFile('data/default_user/current_list.yml');
+  $data = Yaml::parseFile("data/$user/current_list.yml");
   $currentList = isset($data['items']) ? $data['items'] : [];
 }
 
-// Filter by vendor
 $vendorItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === $vendor );
 
 echo json_encode( array_values($vendorItems));

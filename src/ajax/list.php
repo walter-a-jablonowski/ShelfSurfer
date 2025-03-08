@@ -1,23 +1,17 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
 use Symfony\Component\Yaml\Yaml;
 
-try {
+require_once 'vendor/autoload.php';
+require_once 'lib/Session.php';
 
-  $currentList = file_exists('data/default_user/current_list.yml')
-    ? Yaml::parseFile('data/default_user/current_list.yml')
-    : ['items' => []];
 
-  $vendor = $_GET['vendor'];
-  echo json_encode([
-    'items' => $currentList['items']
-  ]);
-}
-catch( Exception $e ) {
-  http_response_code(500);
-  echo json_encode([
-    'error' => $e->getMessage()
-  ]);
-}
+$user = Session::getUser();  // dummy Session class
+
+$currentList = file_exists("data/$user/current_list.yml")
+  ? Yaml::parseFile("data/$user/current_list.yml")
+  : ['items' => []];
+
+echo json_encode([
+  'items' => $currentList['items']
+]);

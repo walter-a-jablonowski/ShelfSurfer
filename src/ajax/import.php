@@ -1,23 +1,27 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
 use Symfony\Component\Yaml\Yaml;
+
+require_once 'vendor/autoload.php';
+require_once 'lib/Session.php';
+
 
 try {
 
-  $places = Yaml::parseFile('data/default_user/places.yml');
-  $currentList = file_exists('data/default_user/current_list.yml')
-    ? Yaml::parseFile('data/default_user/current_list.yml')
+  $input = json_decode(file_get_contents('php://input'), true);
+
+  $user   = Session::getUser();  // dummy Session class
+  $places = Yaml::parseFile("data/$user/places.yml");
+  $currentList = file_exists("data/$user/current_list.yml")
+    ? Yaml::parseFile("data/$user/current_list.yml")
     : ['items' => []];
 
-  $input = json_decode(file_get_contents('php://input'), true);
   $text  = $input['text'];
   $lines = explode("\n", $text);
   $items = [];
   $id    = 1;
   
-  foreach( $lines as $line)
+  foreach( $lines as $line )
   {
     $line = trim($line); 
 
@@ -45,7 +49,7 @@ try {
   }
   
   $currentList['items'] = $items;
-  file_put_contents('data/default_user/current_list.yml', Yaml::dump($currentList));
+  file_put_contents("data/$user/current_list.yml", Yaml::dump($currentList));
   
   echo json_encode([
     'success' => true,

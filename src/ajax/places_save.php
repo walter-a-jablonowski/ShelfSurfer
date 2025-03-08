@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 require_once 'vendor/autoload.php';
 require_once 'lib/Session.php';
 
+
 header('Content-Type: application/json');
 
 $user = Session::getUser();
@@ -37,7 +38,7 @@ try {
   // Write to file
   $result = file_put_contents("data/$user/places.yml", $content);
   if( $result === false ) 
-    echo json_encode(['success' => false, 'message' => 'Could not write to file']);
+    echo json_encode(['success' => false, 'message' => 'Error write to file']);
   else 
     echo json_encode(['success' => true]);
 } 
