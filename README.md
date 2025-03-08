@@ -7,7 +7,7 @@ An older version of this enabled me doing groceries with a long list in 2 places
 - Export as text, import here (Alexa rest API is deprecated)
 - Automatically sorted by sub section where you buy it
 
-See the ~5 items that you need to get where you stand. Much faster than running back and forth while doing groceries or scrolling through a long list multiple times.
+See the ~5 items that you need to get where you stand. Much faster than running back and forth while doing groceries or scrolling through a long flat list multiple times.
 
 Added a print version of the list, use in case you don't want to risk your smartphone
 
