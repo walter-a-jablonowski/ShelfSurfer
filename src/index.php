@@ -9,7 +9,7 @@ require_once 'lib/Session.php';
 // TASK: can be improved
 
 $user   = Session::getUser();  // dummy Session class
-$placesTxt = [];
+$placesTxt = '';
 $places = [];
 
 if( file_exists("data/$user/places.yml") )
@@ -18,10 +18,14 @@ if( file_exists("data/$user/places.yml") )
   $places = Yaml::parse( $placesTxt );
 }
 
+$headersTxt = '';
 $headers = [];
 
 if( file_exists("data/$user/headers.yml") )
-  $headers = Yaml::parseFile("data/$user/headers.yml");
+{
+  $headersTxt = file_get_contents("data/$user/headers.yml");
+  $headers = Yaml::parse( $headersTxt );
+}
 
 $currentList = [];
 
