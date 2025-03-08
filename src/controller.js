@@ -330,16 +330,19 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
     
     // Hide all containers except edit container
-    const mainContainers = document.querySelectorAll('.container.mt-3')
+    const mainContainers = document.querySelectorAll('.page')
     mainContainers.forEach(container => {
       if( container.id !== 'editPlacesContainer' )
-        container.style.display = 'none'
+        container.style.setProperty('display', 'none', 'important')
     })
     
-    // Show edit container
-    editContainer.style.display = 'block'
+    // Show edit container (display: flex is already set in HTML)
+    editContainer.style.setProperty('display', 'flex', 'important')
+    
+    // Focus the editor for immediate typing
+    placesEditor.focus()
   })
-  
+
   // Save places content
   saveButton.addEventListener('click', () => {
     const yamlContent = placesEditor.value
@@ -376,15 +379,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cancel editing
   cancelButton.addEventListener('click', () => {
 
-    // Show all containers except edit container
-    const mainContainers = document.querySelectorAll('.container.mt-3')
-    mainContainers.forEach(container => {
-      if( container.id !== 'editPlacesContainer')
-        container.style.display = 'block'
-    })
-    
     // Hide edit container
-    editContainer.style.display = 'none'
+    editContainer.style.setProperty('display', 'none', 'important')
+    
+    // Show the list container using its ID
+    document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
   })
   
   // Helper function to show status messages
