@@ -31,10 +31,11 @@
     </div>
   </nav>
 
+  <!-- List -->
+
   <div class="container mt-3">
 
     <!-- List info (in list version) -->
-
     <?php if( isset($headers['listHeader']) && ! empty($headers['listHeader'])): ?>
       <div class="card mb-3">
         <div id="listHeaderCard" class="card-header ps-3 pe-4 d-flex justify-content-between align-items-center">
@@ -53,8 +54,21 @@
       </div>
     <?php endif; ?>
 
+    <!-- Main content area - grocery list -->
     <div id="content"></div>
-
+  </div>
+    
+  <!-- Edit places -->
+  
+  <div id="editPlacesContainer" class="container mt-3 d-flex flex-column" style="display: none; height: calc(100vh - 130px);">
+    <div id="edit-status-message" class="alert d-none"></div>
+    
+    <textarea id="placesTextarea" class="form-control border-0 flex-grow-1" style="font-family: monospace; resize: none; min-height: 0;"><?= htmlspecialchars($placesTxt) ?></textarea>
+    
+    <div class="d-flex justify-content-end mt-2 mb-1">
+      <button id="cancelEditPlacesBtn" class="btn btn-secondary me-2">Cancel</button>
+      <button id="savePlacesBtn" class="btn btn-primary">Save</button>
+    </div>
   </div>
 
   <div class="tab-bar">
@@ -82,6 +96,12 @@
               More
             </a>
             <ul class="dropdown-menu dropup-vendors py-2">
+              <li>
+                <a class="dropdown-item nav-link py-2 px-3" href="#" data-edit-places>
+                  <i class="bi bi-pencil-square me-2"></i>
+                  Edit places
+                </a>
+              </li>
               <li>
                 <a class="dropdown-item nav-link py-2 px-3" href="#" data-print>
                   <i class="bi bi-printer me-2"></i>
@@ -143,7 +163,7 @@
           <input id="itemText"    type="text" class="form-control" autofocus>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
           <button type="button" class="btn btn-primary" id="addItemButton">
             Add
           </button>

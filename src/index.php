@@ -9,10 +9,14 @@ require_once 'lib/Session.php';
 // TASK: can be improved
 
 $user   = Session::getUser();  // dummy Session class
+$placesTxt = [];
 $places = [];
 
 if( file_exists("data/$user/places.yml") )
-  $places = Yaml::parseFile("data/$user/places.yml");
+{
+  $placesTxt = file_get_contents("data/$user/places.yml");
+  $places = Yaml::parse( $placesTxt );
+}
 
 $headers = [];
 

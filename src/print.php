@@ -4,8 +4,7 @@ use Symfony\Component\Yaml\Yaml;
 
 require_once 'vendor/autoload.php';
 
-// Load the current list from the correct path
-$yamlFile = __DIR__ . '/data/default_user/current_list.yml';
+$yamlFile    = 'data/default_user/current_list.yml';
 $currentList = [];
 
 if( file_exists($yamlFile) )

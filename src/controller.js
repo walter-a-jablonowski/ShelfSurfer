@@ -14,12 +14,30 @@ document.addEventListener('DOMContentLoaded', () => {
     importModal:  !!importModal
   })
 
+  // Get edit places elements
+  const editContainer = document.getElementById('editPlacesContainer')
+  const placesEditor  = document.getElementById('placesTextarea')
+  const saveButton    = document.getElementById('savePlacesBtn')
+  const cancelButton  = document.getElementById('cancelEditPlacesBtn')
+  const statusMessage = document.getElementById('edit-status-message')
+  
+  console.log('Elements found:', {
+    content:      !!content,
+    importText:   !!importText,
+    importButton: !!importButton,
+    importModal:  !!importModal,
+    editContainer: !!editContainer,
+    placesEditor:  !!placesEditor,
+    saveButton:    !!saveButton,
+    cancelButton:  !!cancelButton
+  })
+
   // Initialize modal
   const bsImportModal = new bootstrap.Modal(importModal, {
     keyboard: true,
     focus: true
   })
-  
+
   // Add item modal
   const addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'))
 
@@ -62,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle import button click
   if( importButton ) {
     console.log('Adding import button click handler')
-    importButton.addEventListener('click', handleImport)
+    importButton.addEventListener('click', async () => {
+      await handleImport()
+    })
   }
 
   async function handleImport()
@@ -303,5 +323,85 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `
       }).join('')
+  }
+
+  // Handle edit places functionality
+  document.querySelector('.dropdown-item[data-edit-places]').addEventListener('click', e => {
+    e.preventDefault()
+    
+    // Hide all containers except edit container
+    const mainContainers = document.querySelectorAll('.container.mt-3')
+    mainContainers.forEach(container => {
+      if( container.id !== 'editPlacesContainer' )
+        container.style.display = 'none'
+    })
+    
+    // Show edit container
+    editContainer.style.display = 'block'
+  })
+  
+  // Save places content
+  saveButton.addEventListener('click', () => {
+    const yamlContent = placesEditor.value
+    
+    fetch('ajax.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        action: 'places_save',
+        content: yamlContent 
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+
+        if( data.success )
+        {
+          showStatusMessage('Places file saved successfully!', 'success')
+          // Reload page after 1 second to reflect changes
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000)
+        }
+        else
+          showStatusMessage( data.message || 'Error saving places content', 'danger')
+      })
+      .catch(error => {
+        showStatusMessage('Error: ' + error.message, 'danger')
+      })
+  })
+  
+  // Cancel editing
+  cancelButton.addEventListener('click', () => {
+
+    // Show all containers except edit container
+    const mainContainers = document.querySelectorAll('.container.mt-3')
+    mainContainers.forEach(container => {
+      if( container.id !== 'editPlacesContainer')
+        container.style.display = 'block'
+    })
+    
+    // Hide edit container
+    editContainer.style.display = 'none'
+  })
+  
+  // Helper function to show status messages
+  function showStatusMessage( message, type )
+  {
+    statusMessage.textContent = message
+    statusMessage.className = `alert alert-${type} mb-3`
+    
+    // Remove d-none class if present
+    statusMessage.classList.remove('d-none')
+    
+    // Auto-hide success messages after 3 seconds
+    if( type === 'success' )
+    {
+      setTimeout(() => {
+        statusMessage.classList.add('d-none')
+      }, 3000)
+    }
   }
 })
