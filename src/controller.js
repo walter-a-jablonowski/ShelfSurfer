@@ -15,21 +15,32 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   // Get edit places elements
-  const editContainer = document.getElementById('editPlacesContainer')
+  const editPlacesContainer = document.getElementById('editPlacesContainer')
   const placesEditor  = document.getElementById('placesTextarea')
-  const saveButton    = document.getElementById('savePlacesBtn')
-  const cancelButton  = document.getElementById('cancelEditPlacesBtn')
-  const statusMessage = document.getElementById('edit-status-message')
+  const savePlacesButton    = document.getElementById('savePlacesBtn')
+  const cancelPlacesButton  = document.getElementById('cancelEditPlacesBtn')
+  const placesStatusMessage = document.getElementById('edit-status-message')
+  
+  // Get edit headers elements
+  const editHeadersContainer = document.getElementById('editHeadersContainer')
+  const headersEditor = document.getElementById('headersTextarea')
+  const saveHeadersButton = document.getElementById('saveHeadersBtn')
+  const cancelHeadersButton = document.getElementById('cancelEditHeadersBtn')
+  const headersStatusMessage = document.getElementById('edit-headers-status-message')
   
   console.log('Elements found:', {
     content:      !!content,
     importText:   !!importText,
     importButton: !!importButton,
     importModal:  !!importModal,
-    editContainer: !!editContainer,
+    editPlacesContainer: !!editPlacesContainer,
     placesEditor:  !!placesEditor,
-    saveButton:    !!saveButton,
-    cancelButton:  !!cancelButton
+    savePlacesButton:    !!savePlacesButton,
+    cancelPlacesButton:  !!cancelPlacesButton,
+    editHeadersContainer: !!editHeadersContainer,
+    headersEditor: !!headersEditor,
+    saveHeadersButton: !!saveHeadersButton,
+    cancelHeadersButton: !!cancelHeadersButton
   })
 
   // Initialize modal
@@ -325,6 +336,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }).join('')
   }
 
+  // Helper function to show places status messages
+  function showPlacesStatusMessage( message, type )
+  {
+    placesStatusMessage.textContent = message
+    placesStatusMessage.className = `alert alert-${type} mb-3`
+    
+    // Remove d-none class if present
+    placesStatusMessage.classList.remove('d-none')
+    
+    // Auto-hide success messages after 3 seconds
+    if( type === 'success' )
+    {
+      setTimeout(() => {
+        placesStatusMessage.classList.add('d-none')
+      }, 3000)
+    }
+  }
+  
+  // Helper function to show headers status messages
+  function showHeadersStatusMessage( message, type )
+  {
+    headersStatusMessage.textContent = message
+    headersStatusMessage.className = `alert alert-${type} mb-3`
+    
+    // Remove d-none class if present
+    headersStatusMessage.classList.remove('d-none')
+    
+    // Auto-hide success messages after 3 seconds
+    if( type === 'success' )
+    {
+      setTimeout(() => {
+        headersStatusMessage.classList.add('d-none')
+      }, 3000)
+    }
+  }
+  
   // Handle edit places functionality
   document.querySelector('.dropdown-item[data-edit-places]').addEventListener('click', e => {
     e.preventDefault()
@@ -337,14 +384,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     
     // Show edit container (display: flex is already set in HTML)
-    editContainer.style.setProperty('display', 'flex', 'important')
+    editPlacesContainer.style.setProperty('display', 'flex', 'important')
     
     // Focus the editor for immediate typing
     placesEditor.focus()
   })
 
   // Save places content
-  saveButton.addEventListener('click', () => {
+  savePlacesButton.addEventListener('click', () => {
     const yamlContent = placesEditor.value
     
     fetch('ajax.php', {
@@ -362,45 +409,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if( data.success )
         {
-          showStatusMessage('Places file saved successfully!', 'success')
-          // Reload page after 1 second to reflect changes
+          showPlacesStatusMessage('Places file saved successfully!', 'success')
+          // Instead of full page reload, just hide editors and show list
           setTimeout(() => {
-            window.location.reload()
+            editPlacesContainer.style.setProperty('display', 'none', 'important')
+            document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
+            // Refresh the content to reflect changes
+            updateContent()
           }, 1000)
         }
         else
-          showStatusMessage( data.message || 'Error saving places content', 'danger')
+          showPlacesStatusMessage( data.message || 'Error saving places content', 'danger')
       })
       .catch(error => {
-        showStatusMessage('Error: ' + error.message, 'danger')
+        showPlacesStatusMessage('Error: ' + error.message, 'danger')
       })
   })
   
   // Cancel editing
-  cancelButton.addEventListener('click', () => {
+  cancelPlacesButton.addEventListener('click', () => {
 
     // Hide edit container
-    editContainer.style.setProperty('display', 'none', 'important')
+    editPlacesContainer.style.setProperty('display', 'none', 'important')
     
     // Show the list container using its ID
     document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
   })
   
-  // Helper function to show status messages
-  function showStatusMessage( message, type )
-  {
-    statusMessage.textContent = message
-    statusMessage.className = `alert alert-${type} mb-3`
+  // Handle edit headers functionality
+  document.querySelector('.dropdown-item[data-edit-headers]').addEventListener('click', e => {
+    e.preventDefault()
     
-    // Remove d-none class if present
-    statusMessage.classList.remove('d-none')
+    // Hide all containers except edit headers container
+    const mainContainers = document.querySelectorAll('.page')
+    mainContainers.forEach(container => {
+      if( container.id !== 'editHeadersContainer' )
+        container.style.setProperty('display', 'none', 'important')
+    })
     
-    // Auto-hide success messages after 3 seconds
-    if( type === 'success' )
-    {
-      setTimeout(() => {
-        statusMessage.classList.add('d-none')
-      }, 3000)
-    }
-  }
+    // Show edit container
+    editHeadersContainer.style.setProperty('display', 'flex', 'important')
+    
+    // Focus the editor for immediate typing
+    headersEditor.focus()
+  })
+  
+  // Save headers content
+  saveHeadersButton.addEventListener('click', () => {
+    const yamlContent = headersEditor.value
+    
+    fetch('ajax.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: 'headers_save',
+        content: yamlContent
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if( data.success )
+        {
+          showHeadersStatusMessage('Headers file saved successfully!', 'success')
+          setTimeout(() => {
+            // Instead of full page reload, just hide editors and show list
+            editHeadersContainer.style.setProperty('display', 'none', 'important')
+            document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
+            // Refresh the content to reflect new headers
+            updateContent()
+          }, 1000)
+        }
+        else
+          showHeadersStatusMessage(data.message || 'Error saving headers content', 'danger')
+      })
+      .catch(error => {
+        showHeadersStatusMessage('Error: ' + error.message, 'danger')
+      })
+  })
+  
+  // Cancel headers editing
+  cancelHeadersButton.addEventListener('click', () => {
+    // Hide edit container
+    editHeadersContainer.style.setProperty('display', 'none', 'important')
+    
+    // Show the list container using its ID
+    document.getElementById('listContainer').style.setProperty('display', 'block', 'important')
+  })
 })

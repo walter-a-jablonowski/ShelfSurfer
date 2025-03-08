@@ -70,6 +70,19 @@
       <button id="savePlacesBtn" class="btn btn-primary" style="background-color: #e95420 !important; border-color: #e95420 !important;">Save</button>
     </div>
   </div>
+  
+  <!-- Edit headers -->
+  
+  <div id="editHeadersContainer" class="container page mt-3 d-flex flex-column" style="display: none !important; height: calc(100vh - 130px);">
+    <div id="edit-headers-status-message" class="alert d-none"></div>
+    
+    <textarea id="headersTextarea" class="form-control border-0 flex-grow-1" style="font-family: monospace; resize: none; height: calc(100vh - 200px);"><?= htmlspecialchars($headersTxt) ?></textarea>
+    
+    <div class="d-flex justify-content-end mt-2 mb-1">
+      <button id="cancelEditHeadersBtn" class="btn btn-secondary me-2">Back</button>
+      <button id="saveHeadersBtn" class="btn btn-primary" style="background-color: #e95420 !important; border-color: #e95420 !important;">Save</button>
+    </div>
+  </div>
 
   <div class="tab-bar">
     <div class="container-fluid">
@@ -100,6 +113,12 @@
                 <a class="dropdown-item nav-link py-2 px-3" href="#" data-edit-places>
                   <i class="bi bi-pencil-square me-2"></i>
                   Edit places
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item nav-link py-2 px-3" href="#" data-edit-headers>
+                  <i class="bi bi-pencil-square me-2"></i>
+                  Edit headers
                 </a>
               </li>
               <li>
