@@ -268,30 +268,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const borderColor = color.replace('0.1)', '0.3)')
         
         // Check if section header exists for this vendor and section
-        let sectionHeader = ''
+        let sectionHeaderText = ''
         if( typeof headers !== 'undefined' && 
             headers && 
             headers.sectionHeaders && 
             headers.sectionHeaders[vendor] && 
             headers.sectionHeaders[vendor][section] ) {
-          const headerText = headers.sectionHeaders[vendor][section]
-          sectionHeader = `
-            <div class="card-text section-info mb-2 px-3 pb-2" style="border-bottom: 1px dashed ${borderColor}">
-              <small>${headerText}</small>
-            </div>
-          `
+          sectionHeaderText = headers.sectionHeaders[vendor][section]
         }
         
         return `
           <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
             <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom-color: ${borderColor}">
-              <b>${section}</b>
+              <div class="d-flex align-items-center">
+                <b>${section}</b>
+                ${sectionHeaderText ? `<small class="ms-2 text-muted">${sectionHeaderText}</small>` : ''}
+              </div>
               <button class="btn btn-sm add-item-btn" data-vendor="${vendor}" data-section="${section}">
                 <i class="bi bi-plus-lg"></i>
               </button>
             </div>
             <div class="card-body p-0 pt-2">
-              ${sectionHeader}
               <ul class="list-group list-group-flush">
                 ${items.map( item => `
                   <li class="list-group-item ${item.checked ? 'checked' : ''}">
