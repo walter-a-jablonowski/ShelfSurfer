@@ -52,7 +52,7 @@ foreach( $currentList as $item )
     
     <div class="print-container">
       <?php if( empty($vendorSections) ): ?>
-        <div class="alert alert-warning no-print">No items found in your shopping list.</div>
+        <div class="alert alert-warning no-print">No items</div>
       <?php else: ?>
         <?php foreach( $vendorSections as $vendor => $sections ): ?>
           <div class="print-vendor">
