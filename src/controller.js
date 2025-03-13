@@ -1,22 +1,15 @@
 
 // was reimplemented by AI as a whole
 
-const SECTION_COLORS = [
-  'rgba(233, 84, 32, 0.1)',   // Ubuntu orange
-  'rgba(41, 128, 185, 0.1)',  // Soft blue
-  'rgba(39, 174, 96, 0.1)',   // Soft green
-  'rgba(142, 68, 173, 0.1)',  // Soft purple
-  'rgba(211, 84, 0, 0.1)',    // Soft orange
-  'rgba(22, 160, 133, 0.1)',  // Soft teal
-  'rgba(192, 57, 43, 0.1)',   // Soft red
-  'rgba(44, 62, 80, 0.1)'     // Soft navy
-]
+// helper function to refresh content after saving places or headers
+function updateContent()
+{
+  // Reload the current vendor to reflect changes
 
-// State management
-
-let currentVendor = null
-// currentList is defined in view.php
-
+  const activeVendorTab = document.querySelector('.nav-link.active')
+  if( activeVendorTab && activeVendorTab.dataset.vendor)
+    controller.loadVendor(activeVendorTab.dataset.vendor)
+}
 
 class MainController
 {
@@ -307,10 +300,10 @@ class MainController
         }, 1000)
       }
       else
-        ui.showStatusMessage(this.placesStatusMessage, result.message || 'Error saving places content', 'danger')
+        ui.showStatusMessage( this.placesStatusMessage, result.message || 'Error saving places content', 'danger')
     }
     catch(error) {
-      ui.showStatusMessage(this.placesStatusMessage, 'Error: ' + error.message, 'danger')
+      ui.showStatusMessage( this.placesStatusMessage, 'Error: ' + error.message, 'danger')
     }
   }
 
@@ -355,20 +348,3 @@ class MainController
     ui.showListContainer()
   }
 }
-
-// Helper function to refresh content after saving places or headers
-
-function updateContent()
-{
-  // Reload the current vendor to reflect changes
-
-  const activeVendorTab = document.querySelector('.nav-link.active')
-  if( activeVendorTab && activeVendorTab.dataset.vendor)
-    controller.loadVendor(activeVendorTab.dataset.vendor)
-}
-
-// Initialize the controller when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  // Create controller instance
-  window.controller = new MainController()
-})

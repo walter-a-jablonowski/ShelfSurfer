@@ -192,12 +192,35 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/helpers.js?v=<?= time() ?>"></script>
+  <script src="controller.js?v=<?= time() ?>"></script>
   <script>
+
+    // controller was reimplemented by AI as a whole
+
     const currentList = <?= json_encode( isset($currentList['items']) ? $currentList['items'] : []) ?>;
     const places      = <?= json_encode( $places ) ?>;
     const headers     = <?= json_encode( $headers ) ?>;
+
+    const SECTION_COLORS = [
+      'rgba(233, 84, 32, 0.1)',   // Ubuntu orange
+      'rgba(41, 128, 185, 0.1)',  // Soft blue
+      'rgba(39, 174, 96, 0.1)',   // Soft green
+      'rgba(142, 68, 173, 0.1)',  // Soft purple
+      'rgba(211, 84, 0, 0.1)',    // Soft orange
+      'rgba(22, 160, 133, 0.1)',  // Soft teal
+      'rgba(192, 57, 43, 0.1)',   // Soft red
+      'rgba(44, 62, 80, 0.1)'     // Soft navy
+    ]
+
+    // State management
+
+    let currentVendor = null  // currentList is defined in view.php
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.controller = new MainController()
+    })
+
   </script>
-  <script src="lib/helpers.js?v=<?= time() ?>"></script>
-  <script src="controller.js?v=<?= time() ?>"></script>
 </body>
 </html>
