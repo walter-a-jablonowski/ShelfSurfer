@@ -1,4 +1,4 @@
-/* DIN A4 portrait print layout with 2 columns */
+/* DIN A4 portrait print layout with 3 columns */
 @page {
   size: A4 portrait;
   margin: 0.5cm;
@@ -24,8 +24,8 @@ body {
 /* Multi-column layout */
 .print-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.2rem;
   width: 100%;
 }
 
@@ -90,8 +90,8 @@ body {
   
   .print-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.2rem;
     width: 100%;
   }
   
