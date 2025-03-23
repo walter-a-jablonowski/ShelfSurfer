@@ -16,7 +16,7 @@ Added a print version of the list, use in case you don't want to risk your smart
 
 ## Demo
 
-<img src="misc/img.png" alt="alt text" style="max-width: 250px;">
+<img src="misc/img.png" alt="alt text" width="250">
 
 
 LICENSE
