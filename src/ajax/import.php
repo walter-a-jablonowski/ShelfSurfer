@@ -38,7 +38,7 @@ try {
     
     $match = findSection($line, $places);
     
-    if( $match )
+    if( $match ) {
       $items[] = [
         'id'      => $id++,
         'text'    => $line,
@@ -46,6 +46,16 @@ try {
         'section' => $match['section'],
         'checked' => false
       ];
+    } else {
+      // Add unmatched items to "Unknown" section
+      $items[] = [
+        'id'      => $id++,
+        'text'    => $line,
+        'vendor'  => 'Unknown', // Special vendor for unmatched items
+        'section' => 'Unknown',
+        'checked' => false
+      ];
+    }
   }
   
   $currentList['items'] = $items;

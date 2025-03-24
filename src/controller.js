@@ -1,4 +1,3 @@
-
 // was reimplemented by AI as a whole
 
 // helper function to refresh content after saving places or headers
@@ -156,7 +155,7 @@ class MainController
     catch(err) {
       console.error('Toggle failed:', err)
       e.target.checked = !checked
-      listItem.classList.toggle('checked', !checked)
+      listItem.classList.toggle('checked', ! checked)
     }
   }
 
@@ -220,22 +219,53 @@ class MainController
 
   renderVendor(vendor)
   {
+    // Get all items for this vendor
     const items = currentList.filter(item => item.vendor === vendor)
     const sections = {}
 
+    // Get any unknown items (from any vendor)
+    const unknownItems = currentList.filter(item => item.vendor === 'Unknown' && item.section === 'Unknown')
+    
+    // Add unknown items to sections if there are any
+    if (unknownItems.length > 0)
+      sections['Unknown'] = unknownItems
+    
+    // Add regular items to their sections
     items.forEach( item => {
       if( ! sections[item.section]) sections[item.section] = []
       sections[item.section].push(item)
     })
 
-    this.content.innerHTML = Object.entries(sections)
-      .map(([section, items], index) => {
+    // Create the HTML for all sections
+    const sectionsHTML = Object.entries(sections)
+      .map(([section, sectionItems], index) => {
+        // Special styling for Unknown section
+        if( section === 'Unknown') {
+          return this.renderSection(
+            section, 
+            sectionItems, 
+            'rgba(200, 200, 200, 0.1)',  // light grey color with transparency
+            'rgba(200, 200, 200, 0.3)', 
+            null,
+            vendor
+          )
+        }
+        
         const color = SECTION_COLORS[index % SECTION_COLORS.length]
         const borderColor = color.replace('0.1)', '0.3)')
         const sectionHeaderText = this.getSectionHeaderText(vendor, section)
 
-        return this.renderSection(section, items, color, borderColor, sectionHeaderText, vendor)
-      }).join('')
+        return this.renderSection(section, sectionItems, color, borderColor, sectionHeaderText, vendor)
+      })
+    
+    // Sort sections to ensure Unknown is at the top
+    const sortedSectionsHTML = sectionsHTML.sort((a, b) => {
+      if( a.includes('Unknown'))  return -1
+      if( b.includes('Unknown'))  return 1
+      return 0
+    })
+    
+    this.content.innerHTML = sortedSectionsHTML.join('')
   }
 
   getSectionHeaderText(vendor, section)

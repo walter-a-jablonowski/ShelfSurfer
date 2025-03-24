@@ -27,4 +27,10 @@ if( file_exists("data/$user/current_list.yml"))
 
 $vendorItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === $vendor );
 
-echo json_encode( array_values($vendorItems));
+// Add unknown items to the result regardless of the vendor
+$unknownItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === 'Unknown' && isset($item['section']) && $item['section'] === 'Unknown' );
+
+// Combine vendor items with unknown items
+$result = array_merge(array_values($vendorItems), array_values($unknownItems));
+
+echo json_encode( $result );
