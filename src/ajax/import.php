@@ -27,6 +27,22 @@ try {
   $items = [];
   $id    = 1;
   
+  // Create a section order map to preserve the original order from places.yml
+  $sectionOrder = [];
+  $orderIndex = 1;     // start from 1 to leave 0 for Unknown
+  
+  // Add Unknown section as the first one (index 0)
+  $sectionOrder["Unknown:Unknown"] = 0;
+  
+  foreach( $places as $vendor => $sections )
+  {
+    if( ! is_array($sections) )
+      continue;
+      
+    foreach( array_keys($sections) as $section )
+      $sectionOrder["$vendor:$section"] = $orderIndex++;
+  }
+  
   foreach( $lines as $line )
   {
     $line = trim($line); 
@@ -50,6 +66,7 @@ try {
         'text'    => $line,
         'vendor'  => $match['vendor'],
         'section' => $match['section'],
+        'order'   => $sectionOrder["{$match['vendor']}:{$match['section']}"] ?? 9999,
         'checked' => false
       ];
     } else {
@@ -59,10 +76,16 @@ try {
         'text'    => $line,
         'vendor'  => 'Unknown', // Special vendor for unmatched items
         'section' => 'Unknown',
+        'order'   => $sectionOrder["Unknown:Unknown"] ?? 9999,
         'checked' => false
       ];
     }
   }
+  
+  // Sort items by order
+  usort($items, function($a, $b) {
+    return $a['order'] <=> $b['order'];
+  });
   
   $currentList['items'] = $items;
   file_put_contents("data/$user/current_list.yml", Yaml::dump($currentList));

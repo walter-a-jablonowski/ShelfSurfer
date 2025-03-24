@@ -224,22 +224,44 @@ class MainController
     // Get all items for this vendor
     const items = currentList.filter(item => item.vendor === vendor)
     const sections = {}
+    const sectionOrders = {}
 
     // Get any unknown items (from any vendor)
     const unknownItems = currentList.filter( item => item.vendor === 'Unknown' && item.section === 'Unknown')
     
     // Add unknown items to sections if there are any
-    if (unknownItems.length > 0)
+    if (unknownItems.length > 0) {
       sections['Unknown'] = unknownItems
+      // Get the order from the first unknown item
+      if( unknownItems[0] && unknownItems[0].order !== undefined)
+        sectionOrders['Unknown'] = unknownItems[0].order
+      else
+        sectionOrders['Unknown'] = 9999 // Default to end if no order specified
+    }
     
     // Add regular items to their sections
     items.forEach( item => {
-      if( ! sections[item.section]) sections[item.section] = []
+      if( ! sections[item.section]) {
+        sections[item.section] = []
+        // Store the section order from the first item we encounter for this section
+        if( item.order !== undefined )
+          sectionOrders[item.section] = item.order
+      }
       sections[item.section].push(item)
     })
 
-    // Create the HTML for all sections
+    // Create the HTML for all sections, sorted by their order
     const sectionsHTML = Object.entries(sections)
+      .sort((a, b) => {
+        // Always put Unknown section first
+        if (a[0] === 'Unknown') return -1;
+        if (b[0] === 'Unknown') return 1;
+        
+        // Sort other sections by the order value
+        const orderA = sectionOrders[a[0]] !== undefined ? sectionOrders[a[0]] : 9999
+        const orderB = sectionOrders[b[0]] !== undefined ? sectionOrders[b[0]] : 9999
+        return orderA - orderB
+      })
       .map(([section, sectionItems], index) => {
         // Special styling for Unknown section
         if( section === 'Unknown') {
