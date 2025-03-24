@@ -25,11 +25,9 @@ if( file_exists("data/$user/current_list.yml"))
   $currentList = isset($data['items']) ? $data['items'] : [];
 }
 
-// TASK: improve this, we should query unknown items in a normal way instead combining
-
 $vendorItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === $vendor );
 
-// Add unknown items to the result regardless of the vendor
+// Add unknown items to all vendors
 $unknownItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === 'Unknown' && isset($item['section']) && $item['section'] === 'Unknown' );
 
 // Combine vendor items with unknown items
