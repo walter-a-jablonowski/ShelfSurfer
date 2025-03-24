@@ -27,20 +27,16 @@ try {
   $items = [];
   $id    = 1;
   
-  // Create a section order map to preserve the original order from places.yml
-  $sectionOrder = [];
-  $orderIndex = 1;     // start from 1 to leave 0 for Unknown
+  // Create a simplified section order map
+  $sectionOrder = ["Unknown:Unknown" => 0]; // Unknown always first
+  $orderIndex = 1;
   
-  // Add Unknown section as the first one (index 0)
-  $sectionOrder["Unknown:Unknown"] = 0;
-  
-  foreach( $places as $vendor => $sections )
-  {
-    if( ! is_array($sections) )
-      continue;
-      
-    foreach( array_keys($sections) as $section )
-      $sectionOrder["$vendor:$section"] = $orderIndex++;
+  // Collect section order from places.yml
+  foreach( $places as $vendor => $sections ) {
+    if( is_array($sections) ) {
+      foreach( array_keys($sections) as $section )
+        $sectionOrder["$vendor:$section"] = $orderIndex++;
+    }
   }
   
   foreach( $lines as $line )
