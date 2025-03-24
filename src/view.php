@@ -63,7 +63,7 @@
   <div id="editPlacesContainer" class="container page mt-3 d-flex flex-column" style="display: none !important; height: calc(100vh - 130px);">
     <div id="edit-status-message" class="alert d-none"></div>
     
-    <textarea id="placesTextarea" class="form-control border-0 flex-grow-1" style="font-family: monospace; resize: none; height: calc(100vh - 200px);"><?= htmlspecialchars($placesTxt) ?></textarea>
+    <textarea id="placesTextarea" class="form-control border-0 flex-grow-1" style="font-family: monospace; resize: none; height: calc(100vh - 200px); white-space: nowrap;"><?= htmlspecialchars($placesTxt) ?></textarea>
     
     <div class="d-flex justify-content-end mt-2 mb-1">
       <button id="cancelEditPlacesBtn" class="btn btn-secondary me-2">Back</button>
@@ -76,7 +76,7 @@
   <div id="editHeadersContainer" class="container page mt-3 d-flex flex-column" style="display: none !important; height: calc(100vh - 130px);">
     <div id="edit-headers-status-message" class="alert d-none"></div>
     
-    <textarea id="headersTextarea" class="form-control border-0 flex-grow-1" style="font-family: monospace; resize: none; height: calc(100vh - 200px);"><?= htmlspecialchars($headersTxt) ?></textarea>
+    <textarea id="headersTextarea" class="form-control border-0 flex-grow-1" style="font-family: monospace; resize: none; height: calc(100vh - 200px); white-space: nowrap;"><?= htmlspecialchars($headersTxt) ?></textarea>
     
     <div class="d-flex justify-content-end mt-2 mb-1">
       <button id="cancelEditHeadersBtn" class="btn btn-secondary me-2">Back</button>
