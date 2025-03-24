@@ -79,7 +79,7 @@ function findSection($item, $places)
   if( ! is_array($places))
     return null;
 
-  $item = trim( preg_replace('/\s+/', '', $item));
+  $item = trim( preg_replace('/\s+/', ' ', $item));
 
   foreach( $places as $vendor => $sections )
   {
@@ -96,7 +96,7 @@ function findSection($item, $places)
         if( ! is_string($possibleItem) )
           continue;
 
-        $possibleItem = trim( preg_replace('/\s+/', '', $possibleItem));
+        $possibleItem = trim( preg_replace('/\s+/', ' ', $possibleItem));
 
         // if( stripos($item, $possibleItem) !== false )
         if( strtolower($item) === strtolower($possibleItem))
