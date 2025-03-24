@@ -260,14 +260,7 @@ class MainController
         return this.renderSection(section, sectionItems, color, borderColor, sectionHeaderText, vendor)
       })
     
-    // Sort sections to ensure Unknown is at the top
-    const sortedSectionsHTML = sectionsHTML.sort((a, b) => {
-      if( a.includes('Unknown'))  return -1
-      if( b.includes('Unknown'))  return 1
-      return 0
-    })
-    
-    this.content.innerHTML = sortedSectionsHTML.join('')
+    this.content.innerHTML = sectionsHTML.join('')
   }
 
   getSectionHeaderText(vendor, section)

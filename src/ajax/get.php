@@ -30,7 +30,7 @@ $vendorItems = array_filter( $currentList, fn($item) => isset($item['vendor']) &
 // Add unknown items to all vendors
 $unknownItems = array_filter( $currentList, fn($item) => isset($item['vendor']) && $item['vendor'] === 'Unknown' && isset($item['section']) && $item['section'] === 'Unknown' );
 
-// Combine vendor items with unknown items
-$result = array_merge( array_values($vendorItems), array_values($unknownItems));
+// Combine unknown items first, then vendor items
+$result = array_merge( array_values($unknownItems), array_values($vendorItems));
 
 echo json_encode( $result );
