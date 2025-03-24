@@ -10,5 +10,6 @@ Einkaufsliste
 7. joghurt
 8. gemüse norma
 9. gemüse
+10. Missing entry
 
 Freigegeben über die Amazon Alexa App
