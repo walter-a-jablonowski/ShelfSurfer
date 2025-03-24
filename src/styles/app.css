@@ -71,7 +71,7 @@ body {
 */
 .section-card .card-header {
   background: transparent;
-  font-size: 1.1rem; /* Increased font size for section-card headers */
+  font-size: 1.2rem; /* Increased font size for section-card headers */
 }
 .section-card .list-group-item {
   background: transparent;
@@ -80,7 +80,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.05rem; /* Increased font size for list entries */
+  font-size: 1.15rem; /* Increased font size for list entries */
 }
 .list-group-item.checked {
   opacity: 0.5;

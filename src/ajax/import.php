@@ -8,7 +8,7 @@ require_once 'lib/Session.php';
 
 try {
 
-  $input = json_decode(file_get_contents('php://input'), true);
+  $input = json_decode( file_get_contents('php://input'), true);
 
   $user   = Session::getUser();  // dummy Session class
   $places = Yaml::parseFile("data/$user/places.yml");
