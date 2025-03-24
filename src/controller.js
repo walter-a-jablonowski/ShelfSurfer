@@ -1,5 +1,7 @@
 // was reimplemented by AI as a whole
 
+// TASK: replace this api. request thing that the ai made by fetch or own api (see helpers)
+
 // helper function to refresh content after saving places or headers
 function updateContent()
 {
@@ -123,8 +125,8 @@ class MainController
 
       if( result.success ) {
         // Update the contents of currentList without reassigning the constant
-        currentList.length = 0  // Clear the array
-        result.items.forEach( item => currentList.push(item))  // Add new items
+        currentList.length = 0  // clear the array
+        result.items.forEach( item => currentList.push(item))  // add new items
         this.importText.value = ''
         this.bsImportModal.hide()
 
@@ -202,8 +204,8 @@ class MainController
       const vendorItems = await api.getVendorItems(vendor)
       
       // Update the contents of currentList without reassigning the constant
-      currentList.length = 0 // Clear the array
-      vendorItems.forEach( item => currentList.push(item)) // Add new items
+      currentList.length = 0  // clear the array
+      vendorItems.forEach( item => currentList.push(item))  // add new items
 
       document.querySelectorAll('.nav-link').forEach( el => {
         el.classList.toggle('active', el.dataset.vendor === vendor)
@@ -224,7 +226,7 @@ class MainController
     const sections = {}
 
     // Get any unknown items (from any vendor)
-    const unknownItems = currentList.filter(item => item.vendor === 'Unknown' && item.section === 'Unknown')
+    const unknownItems = currentList.filter( item => item.vendor === 'Unknown' && item.section === 'Unknown')
     
     // Add unknown items to sections if there are any
     if (unknownItems.length > 0)

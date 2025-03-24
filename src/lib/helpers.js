@@ -4,6 +4,7 @@
 // API functions
 
 const api = {
+
   async makeRequest(action, data) {
     const response = await fetch('ajax.php', {
       method: 'POST',
@@ -45,14 +46,14 @@ const api = {
 // UI Helper functions
 
 const ui = {
+
   showStatusMessage(element, message, type, autohide = true) {
     element.textContent = message
     element.className = `alert alert-${type} mb-3`
     element.classList.remove('d-none')
     
-    if (autohide && type === 'success') {
+    if( autohide && type === 'success')
       setTimeout(() => element.classList.add('d-none'), 3000)
-    }
   },
 
   toggleContainerVisibility(showContainerId) {

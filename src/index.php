@@ -8,28 +8,28 @@ require_once 'lib/Session.php';
 
 // TASK: can be improved
 
-$user   = Session::getUser();  // dummy Session class
+$user      = Session::getUser();  // dummy Session class
 $placesTxt = '';
-$places = [];
+$places    = [];
 
-if( file_exists("data/$user/places.yml") )
+if( file_exists("data/$user/places.yml"))
 {
   $placesTxt = file_get_contents("data/$user/places.yml");
-  $places = Yaml::parse( $placesTxt );
+  $places    = Yaml::parse( $placesTxt );
 }
 
 $headersTxt = '';
-$headers = [];
+$headers    = [];
 
-if( file_exists("data/$user/headers.yml") )
+if( file_exists("data/$user/headers.yml"))
 {
   $headersTxt = file_get_contents("data/$user/headers.yml");
-  $headers = Yaml::parse( $headersTxt );
+  $headers    = Yaml::parse( $headersTxt );
 }
 
 $currentList = [];
 
-if( file_exists("data/$user/current_list.yml") )
+if( file_exists("data/$user/current_list.yml"))
   $currentList = Yaml::parseFile("data/$user/current_list.yml");
 
 require 'view.php';
