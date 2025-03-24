@@ -130,9 +130,12 @@ class MainController
         this.importText.value = ''
         this.bsImportModal.hide()
 
-        const firstVendorWithItems = [...new Set( result.items.map(item => item.vendor))][0]
-        if( firstVendorWithItems )
-          this.loadVendor(firstVendorWithItems)
+        // Find the first vendor that isn't "Unknown" (cause of some UI bug all in one section on import, AI solved it like this)
+        const vendors = [...new Set(result.items.map(item => item.vendor))]
+        const firstRegularVendor = vendors.find(v => v !== 'Unknown') || vendors[0]
+        
+        if( firstRegularVendor )
+          this.loadVendor(firstRegularVendor)
       }
     }
     catch(err) {
