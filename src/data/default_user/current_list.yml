@@ -7,5 +7,5 @@ items:
     - { id: 6, text: flaschen, vendor: Norma, section: 'Gang 2', checked: false }
     - { id: 7, text: joghurt, vendor: Norma, section: Kühl, checked: false }
     - { id: 8, text: 'gemüse norma', vendor: Norma, section: Kasse, checked: false }
-    - { id: 9, text: la, vendor: Unknown, section: Unknown, checked: false }
+    - { id: 9, text: gemüse, vendor: Rewe, section: Gemüse, checked: false }
     - { id: 10, text: 'Missing entry', vendor: Unknown, section: Unknown, checked: false }

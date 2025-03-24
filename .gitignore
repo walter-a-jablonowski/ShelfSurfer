@@ -3,3 +3,4 @@ vendor/
 composer.lock
 ShelfSurfer.code-workspace
 walter/
+src/debug_orig.md
