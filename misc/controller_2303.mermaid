@@ -1,0 +1,35 @@
+graph TD;
+  A[MainController] -->|Constructor| B(initializeElements)
+  A -->|Constructor| C(initializeModals)
+  A -->|Constructor| D(attachEventListeners)
+  A -->|Constructor| E(loadInitialVendor)
+
+  E -->|First vendor| F(loadVendor)
+  F -->|Fetch items| G(renderVendor)
+  G -->|Organize items| H(renderSection)
+  H -->|Generate UI| I(renderItem)
+
+  D -->|Click Event| J(handleImport)
+  J -->|API Import| F
+
+  D -->|Check Event| K(handleItemCheck)
+  K -->|API Toggle| G
+
+  D -->|Add Item Click| L(handleAddItemClick)
+  L -->|Open Modal| M(addItemModal)
+
+  D -->|Enter/Add Button| N(handleAddItem)
+  N -->|API Add| G
+
+  D -->|Edit Places Click| O(handleEditPlaces)
+  O -->|Show Editor| P(placesEditor)
+
+  D -->|Save Places Click| Q(handleSavePlaces)
+  Q -->|API Save| R(updateContent)
+  R -->|Refresh UI| F
+
+  D -->|Edit Headers Click| S(handleEditHeaders)
+  S -->|Show Editor| T(headersEditor)
+
+  D -->|Save Headers Click| U(handleSaveHeaders)
+  U -->|API Save| R
