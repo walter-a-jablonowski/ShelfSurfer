@@ -16,8 +16,14 @@ try {
     ? Yaml::parseFile("data/$user/current_list.yml")
     : ['items' => []];
 
-  $text  = $input['text'];
+  $text = $input['text'];
+  
+  if( ! mb_check_encoding($text, 'UTF-8'))
+    $text = mb_convert_encoding( $text, 'UTF-8');
+  
+  $text  = str_replace(["\r\n", "\r"], "\n", $text);
   $lines = explode("\n", $text);
+
   $items = [];
   $id    = 1;
   
@@ -79,7 +85,12 @@ function findSection($item, $places)
   if( ! is_array($places))
     return null;
 
-  $item = trim( preg_replace('/\s+/', ' ', $item));
+  $item = strtolower( trim( preg_replace('/\s+/', ' ', $item)));
+
+  // Add debug logging
+  $logFile = fopen('import_debug.log', 'a');
+  fwrite($logFile, "\n===== Processing item: '$item' =====\n");
+  fclose($logFile);
 
   foreach( $places as $vendor => $sections )
   {
@@ -96,17 +107,46 @@ function findSection($item, $places)
         if( ! is_string($possibleItem) )
           continue;
 
-        $possibleItem = trim( preg_replace('/\s+/', ' ', $possibleItem));
+        $possibleItem = strtolower( trim( preg_replace('/\s+/', ' ', $possibleItem)));
 
-        // if( stripos($item, $possibleItem) !== false )
-        if( strtolower($item) === strtolower($possibleItem))
+        // Debug log
+        $logFile = fopen('import_debug.log', 'a');
+        fwrite($logFile, "Comparing: '$item' with '$possibleItem'\n");
+        fclose($logFile);
+
+        // Try exact match first
+        if( $item === $possibleItem )
+        {
+          $logFile = fopen('import_debug.log', 'a');
+          fwrite($logFile, "EXACT MATCH FOUND! Vendor: $vendor, Section: $section\n");
+          fclose($logFile);
+          
           return [
             'vendor'  => $vendor,
             'section' => $section
           ];
+        }
+        
+        // Try partial matching - check if one contains the other
+        if( strpos($item, $possibleItem) !== false || strpos($possibleItem, $item) !== false )
+        {
+          $logFile = fopen('import_debug.log', 'a');
+          fwrite($logFile, "PARTIAL MATCH FOUND! Vendor: $vendor, Section: $section\n");
+          fclose($logFile);
+          
+          return [
+            'vendor'  => $vendor,
+            'section' => $section
+          ];
+        }
       }
     }
   }
 
+  // Log when no match is found
+  $logFile = fopen('import_debug.log', 'a');
+  fwrite($logFile, "NO MATCH FOUND - Adding to Unknown\n");
+  fclose($logFile);
+  
   return null;
 }
