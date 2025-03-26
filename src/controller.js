@@ -276,7 +276,7 @@ class MainController
     const hasItems = items && items.length > 0;
     const itemsList = hasItems 
       ? items.map(item => this.renderItem(item)).join('')
-      : '<li class="list-group-item empty-section d-flex justify-content-center align-items-center"><small class="text-secondary" style="font-size: 0.85em;">No entries</small></li>';
+      : '<li class="list-group-item empty-section d-flex justify-content-center align-items-center py-3 mb-2"><small class="text-secondary" style="font-size: 0.85em;">No entries</small></li>';
       
     return `
       <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
