@@ -124,14 +124,11 @@ class MainController
       const result = await api.importList(text)
 
       if( result.success ) {
-        // Update the contents of currentList without reassigning the constant
-        currentList.length = 0  // clear the array
-        result.items.forEach( item => currentList.push(item))  // add new items
         this.importText.value = ''
         this.bsImportModal.hide()
 
-        // Find the first vendor that isn't "Unknown" (cause of some UI bug all in one section on import, AI solved it like this)
-        const vendors = [...new Set(result.items.map(item => item.vendor))]
+        // Find the first vendor that isn't "Unknown"
+        const vendors = Object.keys(result.structured.vendors || {})
         const firstRegularVendor = vendors.find(v => v !== 'Unknown') || vendors[0]
         
         if( firstRegularVendor )
@@ -189,9 +186,8 @@ class MainController
     try {
       const result = await api.addItem(vendor, section, text)
       if( result.success ) {
-        currentList.push(result.item)
         this.addItemModal.hide()
-        this.renderVendor(vendor)
+        this.renderStructuredVendor(vendor, result.structured)
       }
     }
     catch(err) {
@@ -204,17 +200,13 @@ class MainController
   {
     try {
  
-      const vendorItems = await api.getVendorItems(vendor)
+      const structuredData = await api.getVendorItems(vendor)
       
-      // Update the contents of currentList without reassigning the constant
-      currentList.length = 0  // clear the array
-      vendorItems.forEach( item => currentList.push(item))  // add new items
-
       document.querySelectorAll('.nav-link').forEach( el => {
         el.classList.toggle('active', el.dataset.vendor === vendor)
       })
 
-      this.renderVendor(vendor)
+      this.renderStructuredVendor(vendor, structuredData)
     }
     catch(err) {
       console.error('Failed to load vendor:', err)
@@ -222,53 +214,53 @@ class MainController
     }
   }
 
-  renderVendor(vendor)
+  renderStructuredVendor(vendor, structuredData)
   {
-    // Get all items for this vendor
-    const items = currentList.filter(item => item.vendor === vendor)
-    const sections = {}
-    const sectionOrders = {}
-
-    // Get any unknown items (from any vendor)
-    const unknownItems = currentList.filter(item => item.vendor === 'Unknown' && item.section === 'Unknown')
+    if( ! structuredData || ! structuredData.vendors )
+      return
+      
+    const sectionsHTML = []
     
-    // Add unknown items to sections if there are any
-    if (unknownItems.length > 0) {
-      sections['Unknown'] = unknownItems
-      sectionOrders['Unknown'] = 0  // Always first
+    // First render Unknown section if it exists
+    if( structuredData.vendors.Unknown && 
+        structuredData.vendors.Unknown.sections && 
+        structuredData.vendors.Unknown.sections.Unknown ) {
+      
+      const unknownSection = structuredData.vendors.Unknown.sections.Unknown
+      
+      sectionsHTML.push(this.renderSection(
+        'Unknown',
+        unknownSection.items || [],
+        'rgba(200, 200, 200, 0.1)',  // light grey color with transparency
+        'rgba(200, 200, 200, 0.3)',
+        null,
+        'Unknown'
+      ))
     }
     
-    // Add regular items to their sections
-    items.forEach(item => {
-      if (!sections[item.section]) {
-        sections[item.section] = []
-        sectionOrders[item.section] = item.order !== undefined ? item.order : 9999
-      }
-      sections[item.section].push(item)
-    })
-
-    // Create the HTML for all sections, sorted by their order
-    const sectionsHTML = Object.entries(sections)
-      .sort((a, b) => sectionOrders[a[0]] - sectionOrders[b[0]])
-      .map(([section, sectionItems], index) => {
-        // Special styling for Unknown section
-        if (section === 'Unknown') {
-          return this.renderSection(
-            section, 
-            sectionItems, 
-            'rgba(200, 200, 200, 0.1)',  // light grey color with transparency
-            'rgba(200, 200, 200, 0.3)', 
-            null,
-            vendor
-          )
-        }
-        
+    // Then render the vendor's sections
+    if( structuredData.vendors[vendor] && structuredData.vendors[vendor].sections ) {
+      const vendorSections = structuredData.vendors[vendor].sections
+      
+      // Sort sections by their order
+      const sortedSections = Object.entries(vendorSections)
+        .sort((a, b) => (a[1].order || 9999) - (b[1].order || 9999))
+      
+      sortedSections.forEach(([sectionName, sectionData], index) => {
         const color = SECTION_COLORS[index % SECTION_COLORS.length]
         const borderColor = color.replace('0.1)', '0.3)')
-        const sectionHeaderText = this.getSectionHeaderText(vendor, section)
-
-        return this.renderSection(section, sectionItems, color, borderColor, sectionHeaderText, vendor)
+        const sectionHeaderText = this.getSectionHeaderText(vendor, sectionName)
+        
+        sectionsHTML.push(this.renderSection(
+          sectionName,
+          sectionData.items || [],
+          color,
+          borderColor,
+          sectionHeaderText,
+          vendor
+        ))
       })
+    }
     
     this.content.innerHTML = sectionsHTML.join('')
   }

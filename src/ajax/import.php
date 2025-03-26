@@ -83,12 +83,65 @@ try {
     return $a['order'] <=> $b['order'];
   });
   
+  // Create structured result with all vendors and sections
+  $structuredResult = [];
+  
+  // First, prepare the Unknown vendor with Unknown section if there are unknown items
+  $unknownItems = array_filter($items, function($item) {
+    return $item['vendor'] === 'Unknown' && $item['section'] === 'Unknown';
+  });
+  
+  if( ! empty($unknownItems)) {
+    $structuredResult['vendors']['Unknown'] = [
+      'name' => 'Unknown',
+      'sections' => [
+        'Unknown' => [
+          'name' => 'Unknown',
+          'items' => array_values($unknownItems),
+          'order' => 0
+        ]
+      ]
+    ];
+  }
+  
+  // Add all vendors and sections from places.yml
+  foreach( $places as $vendorName => $sections ) {
+    if( ! is_array($sections))
+      continue;
+      
+    if( ! isset($structuredResult['vendors'][$vendorName])) {
+      $structuredResult['vendors'][$vendorName] = [
+        'name' => $vendorName,
+        'sections' => []
+      ];
+    }
+    
+    // Add all sections for this vendor
+    foreach( $sections as $sectionName => $possibleItems ) {
+      if( ! is_array($possibleItems))
+        continue;
+        
+      // Get items for this section
+      $sectionItems = array_filter($items, function($item) use ($vendorName, $sectionName) {
+        return $item['vendor'] === $vendorName && $item['section'] === $sectionName;
+      });
+      
+      // Add section with its items (or empty array)
+      $structuredResult['vendors'][$vendorName]['sections'][$sectionName] = [
+        'name' => $sectionName,
+        'items' => array_values($sectionItems),
+        'order' => $sectionOrder["$vendorName:$sectionName"] ?? 9999
+      ];
+    }
+  }
+  
+  // Store the flat list in the YAML file for backward compatibility
   $currentList['items'] = $items;
   file_put_contents("data/$user/current_list.yml", Yaml::dump($currentList));
   
   echo json_encode([
     'success' => true,
-    'items'   => $items
+    'structured' => $structuredResult
   ]);
 }
 catch( Exception $e ) {
