@@ -63,7 +63,8 @@ if( ! empty($unknownItems)) {
 }
 
 // Add the requested vendor with all its sections
-if( isset($places[$vendor]) && is_array($places[$vendor]) ) {
+if( isset($places[$vendor]) && is_array($places[$vendor]) )
+{
   $structuredResult['vendors'][$vendor] = [
     'name' => $vendor,
     'sections' => []
@@ -81,7 +82,7 @@ if( isset($places[$vendor]) && is_array($places[$vendor]) ) {
     
     // Add section with its items (or empty array)
     $structuredResult['vendors'][$vendor]['sections'][$sectionName] = [
-      'name' => $sectionName,
+      'name'  => $sectionName,
       'items' => array_values($sectionItems),
       'order' => $sectionOrder["$vendor:$sectionName"] ?? 9999
     ];
