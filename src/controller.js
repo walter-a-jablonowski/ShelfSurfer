@@ -273,6 +273,11 @@ class MainController
 
   renderSection(section, items, color, borderColor, headerText, vendor)
   {
+    const hasItems = items && items.length > 0;
+    const itemsList = hasItems 
+      ? items.map(item => this.renderItem(item)).join('')
+      : '<li class="list-group-item empty-section d-flex justify-content-center align-items-center"><small class="text-secondary" style="font-size: 0.85em;">No entries</small></li>';
+      
     return `
       <div class="card section-card mb-3" style="background-color: ${color}; border-color: ${borderColor}">
         <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom-color: ${borderColor}">
@@ -286,7 +291,7 @@ class MainController
         </div>
         <div class="card-body p-0 pt-2">
           <ul class="list-group list-group-flush">
-            ${items.map(item => this.renderItem(item)).join('')}
+            ${itemsList}
           </ul>
         </div>
       </div>
