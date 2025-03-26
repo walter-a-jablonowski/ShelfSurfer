@@ -6,6 +6,8 @@ require_once 'vendor/autoload.php';
 require_once 'lib/Session.php';
 
 
+// Toggle the checked state of an item
+
 $user = Session::getUser();  // dummy Session class
 
 $currentList = file_exists("data/$user/current_list.yml")

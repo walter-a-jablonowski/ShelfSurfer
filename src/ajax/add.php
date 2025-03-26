@@ -6,6 +6,8 @@ require_once 'vendor/autoload.php';
 require_once 'lib/Session.php';
 
 
+// Add an manually added foor
+
 $input = json_decode( file_get_contents('php://input'), true );
 
 if( ! isset($input['vendor']) || ! isset($input['section']) || ! isset($input['text']) )

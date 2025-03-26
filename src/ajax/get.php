@@ -6,6 +6,8 @@ require_once 'vendor/autoload.php';
 require_once 'lib/Session.php';
 
 
+// Get the current list for a vendor when selected in UI
+
 $input = json_decode( file_get_contents('php://input'), true );
 
 if( ! isset($input['vendor']) )
