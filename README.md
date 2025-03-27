@@ -22,7 +22,8 @@ Added a print version of the list, use in case you don't want to risk your smart
 LICENSE
 ----------------------------------------------------------
 
-Copyright (C) Walter A. Jablonowski 2025, free under [MIT License](LICENSE)
+Copyright (C) Walter A. Jablonowski 2025, free for **personal use only** under the [license](LICENSE) \
+please contact me if you want to use it commercially (you need to support the development)
 
 This app is build upon PHP and free software (see [credits](credits.md))
 
